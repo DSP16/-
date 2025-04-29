@@ -1,0 +1,80 @@
+﻿<Page x:Class="ИП_Хевеши.UI.Pages.ArrivalsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ИП_Хевеши.UI.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1080"
+      Title="ArrivalsPage"
+      Background="White">
+    
+   
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+    
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btnUpdateArrivalsList" Style="{StaticResource AutoWideButtons}" Grid.Column="0" Margin="10" HorizontalAlignment="Left" Content="Обновить" Width="150" Click="btnUpdateArrivalsList_Click"/>
+
+            <Button x:Name="btnAddProvider" Style="{StaticResource AutoWideButtons}" Grid.Column="0" HorizontalAlignment="Right" Margin="10" Content="Добавить поставщика" Width="150" Click="btnAddProvider_Click"/>
+
+            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="15,0,0,0" GotFocus="tbSearch_GotFocus" ToolTip="Поиск по всем столбцам" LostFocus="tbSearch_LostFocus" Grid.Column="1" Style="{StaticResource OtherTextBoxes}" />
+            
+            <TextBlock x:Name="NoResultsTextBlock" Grid.Row="0" Grid.Column="1" Text="Товаров не найдено" Visibility="Collapsed" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,5"/>
+           
+            <Button x:Name="btnSearch" Click="btnSearch_Click" Grid.Column="1" VerticalAlignment="Center"  BorderThickness="0" Height="20" Padding="0"  HorizontalAlignment="Right" Width="20">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" BorderBrush="White" Background="{TemplateBinding Background}">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Resources/Searchico.png"/>
+                </Button.Background>
+            </Button>
+
+            <Button x:Name="btnAddArrivals" Grid.Column="2" Style="{StaticResource Buttons}" Content="Добавить" Width="150" Click="btnAddArrivals_Click"/>
+        </Grid>
+        
+        <Button x:Name="btnBack" Grid.Column="0"  BorderThickness="0" Margin="15,0,0,0" HorizontalAlignment="Left" Width="40" Height="40" Padding="0" Click="btnBack_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Background>
+                <ImageBrush ImageSource="pack://application:,,,/Resources/backbtn.png"/>
+            </Button.Background>
+        </Button>
+
+        <DataGrid x:Name="DGridArrivals" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                
+                <DataGridTextColumn Header="Название компонента"  Binding="{Binding Name}"  Width="*"/>
+                <DataGridTextColumn Header="Дата поставки" Binding="{Binding ArrivalDate, StringFormat=\{0:yyyy-MM-dd\}}" Width="*" />
+                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" Width="*"/>
+                <DataGridTextColumn Header="Суммарная стоимость" Binding="{Binding PurchasePrice, StringFormat=\{0:C\}}" Width="*" />
+                <DataGridTextColumn Header="Принявший кладовщик" Binding="{Binding UserName}" Width="*"/>
+                <DataGridTextColumn Header="Поставщик" Binding="{Binding ProviderName}" Width="*"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

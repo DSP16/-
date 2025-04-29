@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ИП_Хевеши.App" Collapsed="true">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.AuthorizeWn" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Winds\AuthorizeWn.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.AddArrivalBack" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\AddArrivalBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.AddComponentBack" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\AddComponentBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.AddIssuanceBack" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\AddIssuanceBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.AddProviderBack" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\AddProviderBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.AuthorizeBack" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAAEAAAA=</HashCode>
+      <FileName>Classes\AuthorizeBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.DGridArrivalsLoadData" Collapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\DGridArrivalsLoadData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.LoadProductCards" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\LoadProductCards.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.LoadRemainsCardBack" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\LoadRemainsCardBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.Manager" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Classes\Manager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.RegistrationBack" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RegistrationBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.SearchArrivalsBack" Collapsed="true">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\SearchArrivalsBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Classes.SearchComponentsBack" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\SearchComponentsBack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.ИП_ХевешиEntities">
+    <Position X="6.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAACAAAAAEBIAIBAAQAAACEgAAAAAABCAAEAAAAAA=</HashCode>
+      <FileName>Data\DBModel.Context.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Arrivals" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAEgIAAAABAACgAAAAAAAAAAAgAgAAAAAA=</HashCode>
+      <FileName>Data\Arrivals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Buyers" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAEAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Buyers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Components" Collapsed="true">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAACAQAIgAAIBAAAAAQCEAAAAAAABQAAgIAAgAA=</HashCode>
+      <FileName>Data\Components.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.InventoryChecks" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgIAAAAgAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\InventoryChecks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Issuance" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAgIAAAAARACgAAAAAAAAAAAAAggAAAAA=</HashCode>
+      <FileName>Data\Issuance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Manufacturers" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgIAAAAAAAAQAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Manufacturers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Movements" Collapsed="true">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAgIAAAAAAACAAAAAAAAAAAAAAgAAABAE=</HashCode>
+      <FileName>Data\Movements.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Providers" Collapsed="true">
+    <Position X="13.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAIAAAAAAQAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Providers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Roles" Collapsed="true">
+    <Position X="6.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Data\Roles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.sysdiagrams" Collapsed="true">
+    <Position X="13.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAIAAAAAAAAAAAAAAAQAAAFAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\sysdiagrams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Users">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAgAAIAAAAAAAAEiAAAAACAQAQAAAAAAA=</HashCode>
+      <FileName>Data\Users.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Data.Zones">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgIAAABAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Zones.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Properties.Resources" Collapsed="true">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.Properties.Settings" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Pages.AddComponentPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAFAAAAAAgAIAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Pages\AddComponentPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Pages.ArrivalsPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAIAAAAAAgAAAQAAAQAIAAAAAAEAAgAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Pages\ArrivalsPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Pages.IssuancesPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAIAAAEAAAAAAAAAAQAIBAAAAAAAAgAAAAAAABAAA=</HashCode>
+      <FileName>UI\Pages\IssuancesPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Pages.LoginPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAEQAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Pages\LoginPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Pages.MainContentPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACIIgAgAAQAAAAAACQABAAAAAFAAAgAAAAAAACBAA=</HashCode>
+      <FileName>UI\Pages\MainContentPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.UserControls.ProductCard" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AihAIAAAAYAAgAADIABEAAAAgAAAAAAAAAAAgABAgAA=</HashCode>
+      <FileName>UI\UserControls\ProductCard.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Winds.AddArrivalWn" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAIAMAAAAAAAA=</HashCode>
+      <FileName>UI\Winds\AddArrivalWn.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Winds.AddComponentWn" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAFAAAAAAgAIAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Winds\AddComponentWn.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Winds.AddIssuanceWn" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAIAAAAAAACAAIAIAAAAAAAA=</HashCode>
+      <FileName>UI\Winds\AddIssuanceWn.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Winds.AddProviderWn" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Winds\AddProviderWn.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ИП_Хевеши.UI.Winds.MainContentWn" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Winds\MainContentWn.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

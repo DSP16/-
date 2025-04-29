@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="73e7cdb66c7743ebbb9e1911d353b23a" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Arrivals" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Buyers" Width="1.5" PointX="6" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Components" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.InventoryChecks" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Issuance" Width="1.5" PointX="8.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Manufacturers" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Movements" Width="1.5" PointX="5.25" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Roles" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.sysdiagrams" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Users" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Zones" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK__Arrivals__Compon__04E4BC85" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Arrivals_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Issuance_Buyers" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Inventory__Compo__0D7A0286" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Issuance__Compon__0A9D95DB" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Movements__Compo__07C12930" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Components_Manufacturer" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Components_Zones" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Roles_Users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.Providers" Width="1.5" PointX="7.375" PointY="9.875" />
+        <AssociationConnector Association="Model.FK_Arrivals_Providers" />
+        <AssociationConnector Association="Model.FK_Issuance_Users" />
+        <AssociationConnector Association="Model.FK_Users_Roles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

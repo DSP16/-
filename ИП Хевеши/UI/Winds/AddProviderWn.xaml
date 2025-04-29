@@ -1,0 +1,45 @@
+﻿<Window x:Class="ИП_Хевеши.UI.Winds.AddProviderWn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ИП_Хевеши.UI.Winds"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+         Icon="pack://application:,,,/Resources/AppLogoKPIcon.ico"
+        Title="ИП Хевеши | Добавление поставщика" Height="250" Width="420">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Button x:Name="btnBack" Grid.Column="0"  BorderThickness="0" HorizontalAlignment="Left" Width="30" Height="30" Padding="0" Margin="5" Click="btnBack_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Background>
+                <ImageBrush ImageSource="pack://application:,,,/Resources/backbtn.png"/>
+            </Button.Background>
+        </Button>
+        
+        <TextBlock Text="Название компании:" Style="{StaticResource AddComponentTextBlock}" FontSize="17" Grid.Row="1" Grid.Column="1" Margin="5,10,5,5"/>
+        <TextBox x:Name="tbProviderName" ToolTip="Название компании. [Строка]" Style="{StaticResource OtherTextBoxes}" Grid.Row="1" Grid.Column="2" Margin="5,10,5,5"/>
+       
+        <TextBlock Text="Страна:" Style="{StaticResource AddComponentTextBlock}" Grid.Row="2" FontSize="17" Grid.Column="1" Margin="5,10,5,5"/>
+        <TextBox x:Name="tbCountry" ToolTip="Страна. [Строка]" Style="{StaticResource OtherTextBoxes}" Grid.Row="2" Grid.Column="2" Margin="5,10,5,5"/>
+
+        <Button x:Name="btnAddProvider" Content="Добавить" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Width="150" HorizontalAlignment="Center" Style="{StaticResource Buttons}" Margin="5,0,5,5" Click="btnAddProvider_Click"/>
+    </Grid>
+</Window>

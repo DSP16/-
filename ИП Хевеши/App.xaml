@@ -1,0 +1,182 @@
+﻿<Application x:Class="ИП_Хевеши.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ИП_Хевеши"
+             StartupUri="UI/Winds/AuthorizeWn.xaml">
+    <Application.Resources>
+
+        <Style x:Key="CustomFont" TargetType="Label">
+            <Setter Property="Focusable" Value="False"/>
+
+            <Setter Property="TextElement.FontFamily" Value="/Fonts/#Bitter-Bold"/>
+        </Style>
+
+
+        <Style x:Key="AddComponentTextBlock" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        
+        <Style x:Key="ProductTextBlock" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5 0 5 0"/>
+        </Style>
+
+        <Style x:Key="RegTextBoxes" TargetType="TextBox">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="5,2,0,0"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="tbBorder" BorderBrush="Gray" BorderThickness="1" CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TextBoxes" TargetType="TextBox">
+            <Setter Property="Width" Value="280"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="5,4,0,0"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="tbBorder" BorderBrush="Gray" BorderThickness="1" CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OtherTextBoxes" TargetType="TextBox">
+            <Setter Property="Width" Value="auto"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Padding" Value="5,5,0,0"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="tbBorder" BorderBrush="Gray" BorderThickness="1" CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DataGrids" TargetType="DataGrid">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+        </Style>
+
+        <Style  TargetType="DataGridCell">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+        </Style>
+
+        <Style x:Key="CheckBoxes" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Name="CheckMark" Source="Resources\unchecked_image.jpg" Width="16" Height="16"/>
+                            <ContentPresenter/>
+
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Source" Value="Resources\checked_image.jpg"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PasswordBoxes" TargetType="PasswordBox">
+            <Setter Property="Width" Value="280"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="5,8,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="pbBorder" BorderBrush="Gray" BorderThickness="1" CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Buttons" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="#249ad7"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" BorderBrush="Gray" BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#54a9eb"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="AutoWideButtons" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="auto"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="#249ad7"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" BorderBrush="Gray" BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#54a9eb"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TextBlocks" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#249ad7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Application.Resources>
+</Application>
