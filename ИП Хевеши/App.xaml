@@ -110,6 +110,26 @@
             </Setter>
         </Style>
 
+        <Style x:Key="CheckBoxesProduct" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Name="CheckMark" Source="Resources\uncheckedProduct.png" Width="16" Height="16"/>
+                            <ContentPresenter/>
+
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Source" Value="Resources\checkedProduct.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="PasswordBoxes" TargetType="PasswordBox">
             <Setter Property="Width" Value="280"/>
             <Setter Property="Height" Value="30"/>

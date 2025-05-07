@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ИП_Хевеши.Classes;
+using ИП_Хевеши.UI.Winds.TipWinds;
 
 namespace ИП_Хевеши.UI.Winds
 {
@@ -63,7 +64,6 @@ namespace ИП_Хевеши.UI.Winds
 
             try
             {
-                // Вызываем метод GenerateExcelReport асинхронно
                 await Task.Run(() => reportsBack.GenerateExcelReport(selectedMonth, enteredYear, reportType));
             }
             catch (Exception ex)
@@ -73,7 +73,6 @@ namespace ИП_Хевеши.UI.Winds
             }
             finally
             {
-                // Скрываем ProgressBar и включаем кнопку обратно
                 ReportProgressBar.Visibility = Visibility.Collapsed;
                 btnGenerateReport.IsEnabled = true;
                 StatusTextBlock.Visibility = Visibility.Collapsed; // Скрываем StatusTextBlock после завершения
@@ -88,5 +87,7 @@ namespace ИП_Хевеши.UI.Winds
                 this.Close();
             }
         }
+
+       
     }
 }

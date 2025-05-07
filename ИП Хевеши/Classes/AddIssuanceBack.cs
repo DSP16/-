@@ -41,7 +41,7 @@ namespace ИП_Хевеши.Classes
                         context.Issuance.Add(newIssuance);
                         context.SaveChanges();
                         ArrivalsPage arrivalsPage = new ArrivalsPage();
-
+                        UpdateIssuanceQuantity(newIssuance.ComponentID, newIssuance.Quantity);
                         MessageBox.Show("Расход успешно добавлено!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         arrivalsPage.LoadArrivals();
                     }
@@ -52,6 +52,41 @@ namespace ИП_Хевеши.Classes
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        public void UpdateIssuanceQuantity(int? componentId, int? quantity)
+        {
+            try
+            {   
+                using (var db = new ИП_ХевешиEntities())
+                {
+                    // 1. Находим комплектующее
+                    var component = db.Components.FirstOrDefault(c => c.ID == componentId);
+                    if (component == null)
+                    {
+                        MessageBox.Show("Ошибка получения комплектующего, пожалуйста, обратитесь к системному администратору", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                    // 2. Уменьшаем количество (проверка на достаточное количество)
+                    if (component.Quantity >= quantity)
+                    {
+                        component.Quantity -= quantity;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Недостаточно комплектующего на складе.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+
+                    // 3. Сохраняем изменения
+                    db.SaveChanges();                   
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при оформлении расхода, пожалуйста, обратитесь к системному администратору", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            }
         }
     }
 }

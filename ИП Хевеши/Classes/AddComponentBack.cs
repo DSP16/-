@@ -25,20 +25,28 @@ namespace ИП_Хевеши.Classes
         public void AddComponent(TextBox tbMinQuantity, ComboBox cbActuality, TextBox tbName, TextBox tbPrice, ComboBox cbManufacturer, 
             ComboBox cbZone, TextBox tbQuantity, TextBox tbRowCell, TextBox tbType)
         {
-            if (tbName.Text == "" || tbPrice.Text == "" || tbQuantity.Text == "" || tbRowCell.Text == "" || tbType.Text == "" ||
-                  tbMinQuantity.Text == "" || cbManufacturer.SelectedValue == null || cbZone.SelectedValue == null || cbActuality.SelectedValue == null)
+
+            try
             {
-                throw new ArgumentException("Одно или более полей незаполненны");
+                if (tbName.Text == "" || tbPrice.Text == "" || tbQuantity.Text == "" || tbRowCell.Text == "" || tbType.Text == "" ||
+                 tbMinQuantity.Text == "" || cbManufacturer.SelectedValue == null || cbZone.SelectedValue == null || cbActuality.SelectedValue == null)
+                {
+                    MessageBox.Show("Одно или более полей незаполненны","Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                if (string.IsNullOrWhiteSpace(tbName.Text) || string.IsNullOrWhiteSpace(tbPrice.Text) ||
+                   string.IsNullOrWhiteSpace(tbQuantity.Text) || string.IsNullOrWhiteSpace(tbRowCell.Text) ||
+                   string.IsNullOrWhiteSpace(tbType.Text) || string.IsNullOrWhiteSpace(tbMinQuantity.Text) ||
+                   cbManufacturer.SelectedValue == null || cbZone.SelectedValue == null || cbActuality.SelectedValue == null)
+                {
+                    MessageBox.Show("Все поля должны быть заполнены", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
-            if (string.IsNullOrWhiteSpace(tbName.Text) || string.IsNullOrWhiteSpace(tbPrice.Text) ||
-               string.IsNullOrWhiteSpace(tbQuantity.Text) || string.IsNullOrWhiteSpace(tbRowCell.Text) ||
-               string.IsNullOrWhiteSpace(tbType.Text) || string.IsNullOrWhiteSpace(tbMinQuantity.Text) ||
-               cbManufacturer.SelectedValue == null || cbZone.SelectedValue == null || cbActuality.SelectedValue == null)
+            catch(Exception ex)
             {
-                throw new ArgumentException("Все поля должны быть заполнены");
+                MessageBox.Show($"В процессе добавления возникла ошибка: {ex.Message}. Пожалуйста, обратитесь к системному администратору", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
-           
+
             try
             {
                

@@ -32,7 +32,7 @@ namespace ИП_Хевеши.Classes
                         var newArrival = new Arrivals
                         {
                             ComponentID = (int)cbComponent.SelectedValue,
-                            ArrivalDate = dpArrivalDate.SelectedDate,
+                            ArrivalDate = (DateTime)dpArrivalDate.SelectedDate,
                             Quantity = int.Parse(tbQuantity.Text),
                             PurchasePrice = decimal.Parse(tbPurchasePrice.Text),
                             UserID = (int)cbUser.SelectedValue,
@@ -42,6 +42,7 @@ namespace ИП_Хевеши.Classes
                         context.Arrivals.Add(newArrival);
                         context.SaveChanges();
                         ArrivalsPage arrivalsPage = new ArrivalsPage();
+                        UpdateArrivalQuantity(newArrival.ComponentID, newArrival.Quantity);
 
                         MessageBox.Show("Поступление успешно добавлено!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         arrivalsPage.LoadArrivals();
@@ -58,6 +59,33 @@ namespace ИП_Хевеши.Classes
             catch (Exception ex)
             {
                  MessageBox.Show(" ", ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        public void UpdateArrivalQuantity(int? componentId, int? quantity)
+        {
+            try
+            {
+                using (var db = new ИП_ХевешиEntities())
+                {
+                    // 1. Находим комплектующее
+                    var component = db.Components.FirstOrDefault(c => c.ID == componentId);
+                    if (component == null)
+                    {
+                        MessageBox.Show("Ошибка получения комплектующего, обратитесь к системному администратору", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                    // 2. Увеличиваем количество
+                    component.Quantity += quantity;
+
+                    // 3. Сохраняем изменения
+                    db.SaveChanges();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

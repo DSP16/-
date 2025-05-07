@@ -13,8 +13,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>
             <ColumnDefinition>
-
-            </ColumnDefinition>
+        </ColumnDefinition>
 
         </Grid.ColumnDefinitions>
 
@@ -54,13 +53,26 @@
         </Grid>
 
         <Image Source="pack://application:,,,/Resources/AppLogoKP.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+       
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0">
             <Button x:Name="btnOpenArrivals" Grid.Column="0"  VerticalAlignment="Top" Grid.Row="1" Content="Поступления" Style="{StaticResource AutoWideButtons}" Click="btnOpenArrivals_Click" Margin="5,15,5,5"/>
             <Button x:Name="btnOpenIssuences" Grid.Column="0"  VerticalAlignment="Top" Grid.Row="1" Content="Расходы" Style="{StaticResource AutoWideButtons}" Click="btnOpenIssuences_Click" Margin="5,15,5,5"/>
             <Button x:Name="btnOpenReports" Grid.Column="0" VerticalAlignment="Top" Grid.Row="1" Content="Отчеты" Style="{StaticResource AutoWideButtons}" Click="btnOpenReports_Click" Margin="5,15,5,5"/>
             <Button x:Name="btnOpenDiagrams" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Аналитика" Style="{StaticResource AutoWideButtons}" Click="btnOpenDiagrams_Click" Margin="5,15,5,5"/>
-        </StackPanel>
 
+        </StackPanel>
+        <Button x:Name="btnInfo" Grid.Row="1" Grid.Column="0"  BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="25" Height="25" Padding="0" Margin="20" Click="btnInfo_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Background>
+                <ImageBrush ImageSource="pack://application:,,,/Resources/Infobtn.png"/>
+            </Button.Background>
+        </Button>
 
 
         <ScrollViewer Grid.Column="1" Grid.Row="1">

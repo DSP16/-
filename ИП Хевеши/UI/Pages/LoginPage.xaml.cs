@@ -69,6 +69,7 @@ namespace ИП_Хевеши.UI.Pages
             else
             {
                 MessageBox.Show("Неверный текст CAPTCHA. Попробуйте еще раз.");
+                CaptchaTextBox.Text = "";
                 RefreshCaptcha();
             }
           

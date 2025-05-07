@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ИП_Хевеши.UI.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="490" d:DesignWidth="450"
+      d:DesignHeight="460" d:DesignWidth="450"
       Title="LoginPage"
       ShowsNavigationUI="False">
 
@@ -14,39 +14,40 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="0.4*" />
                 <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="0.8*"/>
                 
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="GhostWhite"/>
             <Image Grid.Row="0" Source="pack://application:,,,/Resources/AppLogoKP.png" Width="125" Height="125" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
            
-            <Label Grid.Row="1" Content="Логин" FontSize="15" Width="120" Height="30" Margin="0,8,160,0" 
-                   HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="tbLogin" HorizontalAlignment="Center" Margin="0,10,0,0" 
+            <Label Grid.Row="1" Content="Логин"  FontSize="15" Width="120" Height="30" Margin="0,0,160,0" 
+                   HorizontalAlignment="Center" FontWeight="SemiBold" VerticalAlignment="Top"/>
+            <TextBox x:Name="tbLogin" TabIndex="1"  HorizontalAlignment="Center" Margin="0,20,0,0" 
                      Style="{StaticResource TextBoxes}" Grid.Row="1" />
-            <Label Grid.Row="3" Content="Пароль" FontSize="15" Width="120" Height="30" Margin="0,8,160,0" 
+            <Label Grid.Row="2" Content="Пароль" FontWeight="SemiBold" FontSize="15" Width="120" Height="30" Margin="0,0,160,0" 
                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="tbVisiblePassword" HorizontalAlignment="Center" Visibility="Hidden" Margin="0,10,0,0" 
-                     Style="{StaticResource TextBoxes}" Grid.Row="3"/>
-            <PasswordBox x:Name="pbPassword" HorizontalAlignment="Center" Visibility="Visible" Margin="0,10,0,0" 
-                         Style="{StaticResource PasswordBoxes}" Grid.Row="3"/>
+            <TextBox x:Name="tbVisiblePassword" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" Margin="0,30,0,0" 
+                     Style="{StaticResource TextBoxes}" Grid.Row="2"/>
+            <PasswordBox x:Name="pbPassword" TabIndex="2" VerticalAlignment="Top" HorizontalAlignment="Center" Visibility="Visible" Margin="0,30,0,0" 
+                         Style="{StaticResource PasswordBoxes}" Grid.Row="2"/>
             <CheckBox x:Name="cbHideShowPassword" Style="{StaticResource CheckBoxes}" Unchecked="cbHideShowPassword_Unchecked"
-                      Grid.Row="3" VerticalAlignment="Bottom" Margin="85,0,0,3" Content=" Видимость пароля" 
+                      Grid.Row="3" VerticalAlignment="Center" Margin="80,0,0,3" Content=" Видимость пароля" 
                       IsChecked="False" Checked="cbHideShowPassword_Checked"/>
-            <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <Image x:Name="CaptchaImage"  Margin="80,10,0,0"  Width="150" Height="50" />
-                <TextBox x:Name="CaptchaTextBox" Width="130" Height="25" HorizontalAlignment="Center"  
-                         Style="{StaticResource TextBoxes}" Margin="5,-20,0,0"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="4">
+                <Image x:Name="CaptchaImage"  Margin="77,10,0,0"  Width="150" Height="50" />
+                <TextBox x:Name="CaptchaTextBox" Width="125" TabIndex="3" Height="25" HorizontalAlignment="Center"  
+                         Style="{StaticResource TextBoxes}" Margin="4,-20,0,0"/>
             </StackPanel>
             
-            <Button x:Name="btnRefreshCaptcha" Width="70" Grid.Row="2" Height="25" Content="Обновить"
-                    Style="{StaticResource Buttons}" Margin="100,40,0,0" Click="btnRefreschCaptcha_Click"/>
+            <Button x:Name="btnRefreshCaptcha" Width="125" Grid.Row="4" Height="25" Content="Обновить"
+                    Style="{StaticResource Buttons}" Margin="155,40,0,0" Click="btnRefreschCaptcha_Click"/>
 
-            <Button x:Name="btnAuthorize" Width="280" Height="40" Grid.Row="4" Style="{StaticResource Buttons}" 
+            <Button x:Name="btnAuthorize" Width="280" Height="40" Grid.Row="5" Style="{StaticResource Buttons}" 
                     Content="Войти"  Click="btnAuthorize_Click" />
         </Grid>
     </Grid>

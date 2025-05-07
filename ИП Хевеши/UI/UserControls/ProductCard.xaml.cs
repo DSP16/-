@@ -121,7 +121,7 @@ namespace ИП_Хевеши.UI.UserControls
                     var componentToUpdate = context.Components.SingleOrDefault(c => c.ID == ID);
                     if (componentToUpdate != null)
                     {
-                        componentToUpdate.Actuality = checkBox.IsChecked == true ? "Актуально" : "Не актуально";
+                        componentToUpdate.Actuality = checkBox.IsChecked == true ? " Актуально" : " Не актуально";
                         context.SaveChanges();
                     }
                 }

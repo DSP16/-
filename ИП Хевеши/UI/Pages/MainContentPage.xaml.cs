@@ -19,6 +19,7 @@ using ИП_Хевеши.UI.Pages;
 using ИП_Хевеши.UI.UserControls;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using ИП_Хевеши.UI.Winds.TipWinds;
 
 namespace ИП_Хевеши.UI.Pages
 {
@@ -230,18 +231,24 @@ namespace ИП_Хевеши.UI.Pages
 
         private void btnOpenDiagrams_Click(object sender, RoutedEventArgs e)
         {
-
+            Manager.Frame.Navigate(new AnalyticsPage());
         }
 
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                LoadCards();
+                btnSearch_Click(sender, e);
                 e.Handled = true;
             }
 
 
+        }
+
+        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+            HelperCollectionWn helperCollectionWn = new HelperCollectionWn();
+            helperCollectionWn.Show();
         }
     }
 }
