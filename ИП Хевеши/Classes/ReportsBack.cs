@@ -19,7 +19,7 @@ namespace ИП_Хевеши.Classes
 {
     public class ReportsBack : ReportsWn
     {
-        private static List<ProviderComponentsData> data;
+        private static List<ProviderComponentsData> Providerdata;
 
         public static void GenerateSupplierComponentReport(string filePath)
         {
@@ -30,7 +30,7 @@ namespace ИП_Хевеши.Classes
                 
                 using (var db = new ИП_ХевешиEntities()) // Замените на ваш контекст данных
                 {
-                    data = (from a in db.Arrivals
+                    Providerdata = (from a in db.Arrivals
                             select new ProviderComponentsData
                             {
                                 ProviderName = a.Providers.Name,
@@ -56,7 +56,7 @@ namespace ИП_Хевеши.Classes
 
                     // Записываем данные
                     int row = 2;
-                    foreach (var item in data)
+                    foreach (var item in Providerdata)
                     {
                         worksheet.Cell(row, 1).Value = item.ProviderName;
                         worksheet.Cell(row, 2).Value = item.ComponentName;
@@ -73,8 +73,7 @@ namespace ИП_Хевеши.Classes
             }
             catch (Exception ex)
             {
-
-
+                MessageBox.Show($"Ошибка при формировании отчета: {ex.Message}");
             }
         }
         public void GenerateExcelReport(int selectedMonth, int enteredYear, string reportType)
@@ -130,8 +129,23 @@ namespace ИП_Хевеши.Classes
                                     };
                             break;
 
+                        case "По поставщикам":
+                            query = from a in db.Arrivals
+                                    orderby a.Providers.Name
+                                    select new
+                                    {
+                                        Имя_Поставщика = a.Providers.Name,
+                                        Комплектующее = a.Components.Name,
+                                        Количество = a.Quantity,
+                                        Цена_Поставки = a.PurchasePrice,
+                                        Дата_Поставки = a.ArrivalDate,
+                                        Сумма_Поставки = (decimal)(a.Quantity * a.PurchasePrice)
+
+                                    };
+                            break; 
+
                         default:
-                            MessageBox.Show("Выберите тип отчета: Поступления или Расходы.");
+                            MessageBox.Show("Выберите тип отчета: Поступления, Расходы или По поставщикам.");
                             return;
                     }
 
@@ -233,7 +247,6 @@ namespace ИП_Хевеши.Classes
                             worksheet.Columns().AdjustToContents();
                             workbook.SaveAs(saveFileDialog.FileName);
                         }
-
                         MessageBox.Show($"Отчет успешно создан: {saveFileDialog.FileName}");
                         ReportProgressBar.Visibility = Visibility.Hidden;
                         btnGenerateReport.IsEnabled = true;

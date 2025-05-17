@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ИП_Хевеши"
-             StartupUri="UI/Winds/AuthorizeWn.xaml">
+             StartupUri="UI/Winds/AuthorizeWn.xaml"
+             ShutdownMode="OnMainWindowClose">
     <Application.Resources>
 
         <Style x:Key="CustomFont" TargetType="Label">

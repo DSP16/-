@@ -47,8 +47,10 @@ namespace ИП_Хевеши.Classes
                     {
                         
                         MainContentWn mainContentWn = new MainContentWn(userName); /*users[CorrectUserId].Login*/
+                        Application.Current.MainWindow =  mainContentWn;
                         authorizeWn.Close();
                         mainContentWn.Show();
+                        
                     }
                 }
                 else if (cbHideShowPassword.IsChecked == true)

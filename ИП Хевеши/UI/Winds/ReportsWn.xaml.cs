@@ -48,6 +48,10 @@ namespace ИП_Хевеши.UI.Winds
             {
                 reportType = "Расходы";
             }
+            else if (ProvidersRadioButton.IsChecked == true)
+            {
+                reportType = "По поставщикам";
+            }
             else
             {
                 MessageBox.Show("Выберите тип отчета.");

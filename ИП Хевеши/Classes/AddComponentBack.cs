@@ -28,11 +28,13 @@ namespace ИП_Хевеши.Classes
 
             try
             {
+                // Проверяем, что все обязательные поля заполнены
                 if (tbName.Text == "" || tbPrice.Text == "" || tbQuantity.Text == "" || tbRowCell.Text == "" || tbType.Text == "" ||
                  tbMinQuantity.Text == "" || cbManufacturer.SelectedValue == null || cbZone.SelectedValue == null || cbActuality.SelectedValue == null)
                 {
                     MessageBox.Show("Одно или более полей незаполненны","Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
+                // Преобразуем цену из строки в число. Если формат неправильный — сообщаем об ошибке.
                 if (string.IsNullOrWhiteSpace(tbName.Text) || string.IsNullOrWhiteSpace(tbPrice.Text) ||
                    string.IsNullOrWhiteSpace(tbQuantity.Text) || string.IsNullOrWhiteSpace(tbRowCell.Text) ||
                    string.IsNullOrWhiteSpace(tbType.Text) || string.IsNullOrWhiteSpace(tbMinQuantity.Text) ||
@@ -48,9 +50,9 @@ namespace ИП_Хевеши.Classes
 
 
             try
-            {
-               
+            { 
                 {
+                    // Получаем строковое значение актуальности из элемента ComboBox
                     string actuality = (cbActuality.SelectedItem as ComboBoxItem).Content.ToString();
                     var component = new Components
                     {

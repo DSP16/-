@@ -29,6 +29,8 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <RadioButton x:Name="ArrivalsRadioButton" FontWeight="SemiBold" Content="Поступления" Margin="5" IsChecked="True" />
             <RadioButton x:Name="IssuanceRadioButton" FontWeight="SemiBold"  Content="Расходы" Margin="5" />
+            <RadioButton x:Name="ProvidersRadioButton" FontWeight="SemiBold"  Content="По поставщикам" Margin="5" />
+
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
             <Button x:Name="btnCancel" Width="200" Style="{StaticResource AutoWideButtons}" Grid.Row="4" Content="Отмена" Click="btnCancel_Click" Margin="0,10,0,0" Padding="5" />
