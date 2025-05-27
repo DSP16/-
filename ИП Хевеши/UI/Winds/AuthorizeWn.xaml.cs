@@ -33,6 +33,7 @@ namespace ИП_Хевеши
         {
             Manager.Frame = LogRegFrame;
             LogRegFrame.Navigate(new LoginPage());
+
         }
     }
 }

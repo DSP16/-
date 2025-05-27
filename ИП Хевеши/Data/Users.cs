@@ -19,6 +19,8 @@ namespace ИП_Хевеши.Data
         {
             this.Arrivals = new HashSet<Arrivals>();
             this.Issuance = new HashSet<Issuance>();
+            this.Receipts = new HashSet<Receipts>();
+            this.IssuanceReceipts = new HashSet<IssuanceReceipts>();
         }
     
         public int ID { get; set; }
@@ -34,5 +36,9 @@ namespace ИП_Хевеши.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Issuance> Issuance { get; set; }
         public virtual Roles Roles1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receipts> Receipts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IssuanceReceipts> IssuanceReceipts { get; set; }
     }
 }

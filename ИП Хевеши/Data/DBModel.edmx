@@ -16,6 +16,7 @@
           <Property Name="PurchasePrice" Type="decimal" Precision="10" Scale="2" />
           <Property Name="UserID" Type="int" />
           <Property Name="ProviderID" Type="int" />
+          <Property Name="ReceiptID" Type="int" />
         </EntityType>
         <EntityType Name="Buyers">
           <Key>
@@ -59,6 +60,17 @@
           <Property Name="Quantity" Type="int" />
           <Property Name="BuyerID" Type="int" />
           <Property Name="UserID" Type="int" />
+          <Property Name="ReceiptID" Type="int" />
+        </EntityType>
+        <EntityType Name="IssuanceReceipts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReceiptNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="BuyerID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Manufacturers">
           <Key>
@@ -86,6 +98,16 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="Country" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Receipts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReceiptNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="ProviderID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -135,6 +157,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Arrivals__Receip__17F790F9">
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="0..1" />
+          <End Role="Arrivals" Type="Self.Arrivals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Arrivals">
+              <PropertyRef Name="ReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Inventory__Compo__0D7A0286">
           <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
           <End Role="InventoryChecks" Type="Self.InventoryChecks" Multiplicity="*" />
@@ -159,6 +193,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Issuance__Receip__1CBC4616">
+          <End Role="IssuanceReceipts" Type="Self.IssuanceReceipts" Multiplicity="0..1" />
+          <End Role="Issuance" Type="Self.Issuance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IssuanceReceipts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Issuance">
+              <PropertyRef Name="ReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssuanceR__Buyer__1AD3FDA4">
+          <End Role="Buyers" Type="Self.Buyers" Multiplicity="1" />
+          <End Role="IssuanceReceipts" Type="Self.IssuanceReceipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buyers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IssuanceReceipts">
+              <PropertyRef Name="BuyerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssuanceR__UserI__1BC821DD">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="IssuanceReceipts" Type="Self.IssuanceReceipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IssuanceReceipts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Movements__Compo__07C12930">
           <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
           <End Role="Movements" Type="Self.Movements" Multiplicity="*" />
@@ -168,6 +238,30 @@
             </Principal>
             <Dependent Role="Movements">
               <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipts__Provid__160F4887">
+          <End Role="Providers" Type="Self.Providers" Multiplicity="1" />
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Providers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipts__UserID__17036CC0">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -261,15 +355,21 @@
           <EntitySet Name="Components" EntityType="Self.Components" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InventoryChecks" EntityType="Self.InventoryChecks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Issuance" EntityType="Self.Issuance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IssuanceReceipts" EntityType="Self.IssuanceReceipts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Manufacturers" EntityType="Self.Manufacturers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Movements" EntityType="Self.Movements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Providers" EntityType="Self.Providers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receipts" EntityType="Self.Receipts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zones" EntityType="Self.Zones" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Arrivals__Compon__04E4BC85" Association="Self.FK__Arrivals__Compon__04E4BC85">
             <End Role="Components" EntitySet="Components" />
+            <End Role="Arrivals" EntitySet="Arrivals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Arrivals__Receip__17F790F9" Association="Self.FK__Arrivals__Receip__17F790F9">
+            <End Role="Receipts" EntitySet="Receipts" />
             <End Role="Arrivals" EntitySet="Arrivals" />
           </AssociationSet>
           <AssociationSet Name="FK__Inventory__Compo__0D7A0286" Association="Self.FK__Inventory__Compo__0D7A0286">
@@ -280,9 +380,29 @@
             <End Role="Components" EntitySet="Components" />
             <End Role="Issuance" EntitySet="Issuance" />
           </AssociationSet>
+          <AssociationSet Name="FK__Issuance__Receip__1CBC4616" Association="Self.FK__Issuance__Receip__1CBC4616">
+            <End Role="IssuanceReceipts" EntitySet="IssuanceReceipts" />
+            <End Role="Issuance" EntitySet="Issuance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssuanceR__Buyer__1AD3FDA4" Association="Self.FK__IssuanceR__Buyer__1AD3FDA4">
+            <End Role="Buyers" EntitySet="Buyers" />
+            <End Role="IssuanceReceipts" EntitySet="IssuanceReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssuanceR__UserI__1BC821DD" Association="Self.FK__IssuanceR__UserI__1BC821DD">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="IssuanceReceipts" EntitySet="IssuanceReceipts" />
+          </AssociationSet>
           <AssociationSet Name="FK__Movements__Compo__07C12930" Association="Self.FK__Movements__Compo__07C12930">
             <End Role="Components" EntitySet="Components" />
             <End Role="Movements" EntitySet="Movements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipts__Provid__160F4887" Association="Self.FK__Receipts__Provid__160F4887">
+            <End Role="Providers" EntitySet="Providers" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipts__UserID__17036CC0" Association="Self.FK__Receipts__UserID__17036CC0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Receipts" EntitySet="Receipts" />
           </AssociationSet>
           <AssociationSet Name="FK_Arrivals_Providers" Association="Self.FK_Arrivals_Providers">
             <End Role="Providers" EntitySet="Providers" />
@@ -331,6 +451,8 @@
           <NavigationProperty Name="Users" Relationship="Self.FK_Arrivals_Users" FromRole="Arrivals" ToRole="Users" />
           <Property Name="ProviderID" Type="Int32" />
           <NavigationProperty Name="Providers" Relationship="Model.FK_Arrivals_Providers" FromRole="Arrivals" ToRole="Providers" />
+          <Property Name="ReceiptID" Type="Int32" />
+          <NavigationProperty Name="Receipts" Relationship="Model.FK__Arrivals__Receip__17F790F9" FromRole="Arrivals" ToRole="Receipts" />
         </EntityType>
         <EntityType Name="Buyers">
           <Key>
@@ -340,6 +462,7 @@
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Issuance" Relationship="Self.FK_Issuance_Buyers" FromRole="Buyers" ToRole="Issuance" />
+          <NavigationProperty Name="IssuanceReceipts" Relationship="Model.FK__IssuanceR__Buyer__1AD3FDA4" FromRole="Buyers" ToRole="IssuanceReceipts" />
         </EntityType>
         <EntityType Name="Components">
           <Key>
@@ -385,6 +508,8 @@
           <NavigationProperty Name="Components" Relationship="Self.FK__Issuance__Compon__0A9D95DB" FromRole="Issuance" ToRole="Components" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="Users" Relationship="Model.FK_Issuance_Users" FromRole="Issuance" ToRole="Users" />
+          <Property Name="ReceiptID" Type="Int32" />
+          <NavigationProperty Name="IssuanceReceipts" Relationship="Model.FK__Issuance__Receip__1CBC4616" FromRole="Issuance" ToRole="IssuanceReceipts" />
         </EntityType>
         <EntityType Name="Manufacturers">
           <Key>
@@ -440,6 +565,8 @@
           <NavigationProperty Name="Roles" Relationship="Self.FK_Roles_Users" FromRole="Users" ToRole="Roles" />
           <NavigationProperty Name="Issuance" Relationship="Model.FK_Issuance_Users" FromRole="Users" ToRole="Issuance" />
           <NavigationProperty Name="Roles1" Relationship="Model.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="Receipts" Relationship="Model.FK__Receipts__UserID__17036CC0" FromRole="Users" ToRole="Receipts" />
+          <NavigationProperty Name="IssuanceReceipts" Relationship="Model.FK__IssuanceR__UserI__1BC821DD" FromRole="Users" ToRole="IssuanceReceipts" />
         </EntityType>
         <EntityType Name="Zones">
           <Key>
@@ -619,6 +746,32 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="Receipts" EntityType="Model.Receipts" />
+          <AssociationSet Name="FK__Arrivals__Receip__17F790F9" Association="Model.FK__Arrivals__Receip__17F790F9">
+            <End Role="Receipts" EntitySet="Receipts" />
+            <End Role="Arrivals" EntitySet="Arrivals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipts__Provid__160F4887" Association="Model.FK__Receipts__Provid__160F4887">
+            <End Role="Providers" EntitySet="Providers" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipts__UserID__17036CC0" Association="Model.FK__Receipts__UserID__17036CC0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <EntitySet Name="IssuanceReceipts" EntityType="Model.IssuanceReceipts" />
+          <AssociationSet Name="FK__IssuanceR__Buyer__1AD3FDA4" Association="Model.FK__IssuanceR__Buyer__1AD3FDA4">
+            <End Role="Buyers" EntitySet="Buyers" />
+            <End Role="IssuanceReceipts" EntitySet="IssuanceReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Issuance__Receip__1CBC4616" Association="Model.FK__Issuance__Receip__1CBC4616">
+            <End Role="IssuanceReceipts" EntitySet="IssuanceReceipts" />
+            <End Role="Issuance" EntitySet="Issuance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssuanceR__UserI__1BC821DD" Association="Model.FK__IssuanceR__UserI__1BC821DD">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="IssuanceReceipts" EntitySet="IssuanceReceipts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Providers">
           <Key>
@@ -628,6 +781,7 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Arrivals" Relationship="Model.FK_Arrivals_Providers" FromRole="Providers" ToRole="Arrivals" />
+          <NavigationProperty Name="Receipts" Relationship="Model.FK__Receipts__Provid__160F4887" FromRole="Providers" ToRole="Receipts" />
         </EntityType>
         <Association Name="FK_Arrivals_Providers">
           <End Type="Model.Providers" Role="Providers" Multiplicity="0..1" />
@@ -665,6 +819,104 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Receipts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceiptNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProviderID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Arrivals" Relationship="Model.FK__Arrivals__Receip__17F790F9" FromRole="Receipts" ToRole="Arrivals" />
+          <NavigationProperty Name="Providers" Relationship="Model.FK__Receipts__Provid__160F4887" FromRole="Receipts" ToRole="Providers" />
+          <NavigationProperty Name="Users" Relationship="Model.FK__Receipts__UserID__17036CC0" FromRole="Receipts" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__Arrivals__Receip__17F790F9">
+          <End Type="Model.Receipts" Role="Receipts" Multiplicity="0..1" />
+          <End Type="Model.Arrivals" Role="Arrivals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Arrivals">
+              <PropertyRef Name="ReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipts__Provid__160F4887">
+          <End Type="Model.Providers" Role="Providers" Multiplicity="1" />
+          <End Type="Model.Receipts" Role="Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Providers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="ProviderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipts__UserID__17036CC0">
+          <End Type="Model.Users" Role="Users" Multiplicity="1" />
+          <End Type="Model.Receipts" Role="Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IssuanceReceipts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceiptNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BuyerID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Buyers" Relationship="Model.FK__IssuanceR__Buyer__1AD3FDA4" FromRole="IssuanceReceipts" ToRole="Buyers" />
+          <NavigationProperty Name="Issuance" Relationship="Model.FK__Issuance__Receip__1CBC4616" FromRole="IssuanceReceipts" ToRole="Issuance" />
+          <NavigationProperty Name="Users" Relationship="Model.FK__IssuanceR__UserI__1BC821DD" FromRole="IssuanceReceipts" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__IssuanceR__Buyer__1AD3FDA4">
+          <End Type="Model.Buyers" Role="Buyers" Multiplicity="1" />
+          <End Type="Model.IssuanceReceipts" Role="IssuanceReceipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buyers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IssuanceReceipts">
+              <PropertyRef Name="BuyerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Issuance__Receip__1CBC4616">
+          <End Type="Model.IssuanceReceipts" Role="IssuanceReceipts" Multiplicity="0..1" />
+          <End Type="Model.Issuance" Role="Issuance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IssuanceReceipts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Issuance">
+              <PropertyRef Name="ReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssuanceR__UserI__1BC821DD">
+          <End Type="Model.Users" Role="Users" Multiplicity="1" />
+          <End Type="Model.IssuanceReceipts" Role="IssuanceReceipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IssuanceReceipts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -674,6 +926,7 @@
           <EntitySetMapping Name="Arrivals">
             <EntityTypeMapping TypeName="Model.Arrivals">
               <MappingFragment StoreEntitySet="Arrivals">
+                <ScalarProperty Name="ReceiptID" ColumnName="ReceiptID" />
                 <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComponentID" ColumnName="ComponentID" />
@@ -722,6 +975,7 @@
           <EntitySetMapping Name="Issuance">
             <EntityTypeMapping TypeName="Model.Issuance">
               <MappingFragment StoreEntitySet="Issuance">
+                <ScalarProperty Name="ReceiptID" ColumnName="ReceiptID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComponentID" ColumnName="ComponentID" />
@@ -797,6 +1051,28 @@
               <MappingFragment StoreEntitySet="Providers">
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipts">
+            <EntityTypeMapping TypeName="Model.Receipts">
+              <MappingFragment StoreEntitySet="Receipts">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ReceiptNumber" ColumnName="ReceiptNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IssuanceReceipts">
+            <EntityTypeMapping TypeName="Model.IssuanceReceipts">
+              <MappingFragment StoreEntitySet="IssuanceReceipts">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="BuyerID" ColumnName="BuyerID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ReceiptNumber" ColumnName="ReceiptNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

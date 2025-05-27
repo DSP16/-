@@ -18,7 +18,7 @@ namespace InventoryTestsAddComponent
     [TestClass]
     public class Tests
     {
-
+        public  ИП_ХевешиEntities _context = new ИП_ХевешиEntities();
         [TestMethod]
         public void AddComponent_WithValidData_AddComponent()
         {
@@ -53,7 +53,8 @@ namespace InventoryTestsAddComponent
             var addComponent = new AddComponentBack();
             addComponent.AddComponent(tbMinQuantity, cbActuality, tbName, tbPrice, cbManufacturer, cbZone, tbQuantity, tbRowCell, tbType);
             // Assert
-            var addedComponent = ИП_ХевешиEntities.GetContext().Components.Any(c => c.Name == "TestComponent");
+            
+            var addedComponent = _context.Components.Any(c => c.Name == "TestComponent");
            
          
         }
@@ -108,7 +109,7 @@ namespace InventoryTestsAddComponent
             // Act 
                 addArrival.AddArrival(tbQuantity, tbPurcharsePrice, cbComponentID, cbUserID, dpArrivalDate, cbProviderID);
             //Assert
-            var addedArrival = ИП_ХевешиEntities.GetContext().Arrivals.Any(a => a.Quantity == 2 && a.UserID == 1);
+            var addedArrival = _context.Arrivals.Any(a => a.Quantity == 2 && a.UserID == 1);
         }
 
         
@@ -158,7 +159,7 @@ namespace InventoryTestsAddComponent
             addProvider.AddProvider(tbName, tbCountry);
 
             // Assert
-            var addedProvider = ИП_ХевешиEntities.GetContext().Providers.Any(p => p.Name == "ООО 'Система ПБО'" && p.Country == "Россия");
+            var addedProvider =  _context.Providers.Any(p => p.Name == "ООО 'Система ПБО'" && p.Country == "Россия");
 
 
         }

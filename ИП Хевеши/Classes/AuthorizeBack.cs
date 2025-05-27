@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ИП_Хевеши.Data;
 using ИП_Хевеши.UI.Winds;
+using ИП_Хевеши.Views;
 
 namespace ИП_Хевеши.Classes
 {
@@ -46,7 +47,7 @@ namespace ИП_Хевеши.Classes
                     else
                     {
                         
-                        MainContentWn mainContentWn = new MainContentWn(userName); /*users[CorrectUserId].Login*/
+                        MainContentWn mainContentWn = new MainContentWn(userName,  CorrectUserId); /*users[CorrectUserId].Login*/
                         Application.Current.MainWindow =  mainContentWn;
                         authorizeWn.Close();
                         mainContentWn.Show();
@@ -70,7 +71,8 @@ namespace ИП_Хевеши.Classes
                     }
                     else
                     {
-                        MainContentWn mainContentWn = new MainContentWn(userName); /*users[CorrectUserId].Login*/
+                      
+                        MainContentWn mainContentWn = new MainContentWn(userName, CorrectUserId); /*users[CorrectUserId].Login*/
                         authorizeWn.Close();
                         mainContentWn.Show();
 

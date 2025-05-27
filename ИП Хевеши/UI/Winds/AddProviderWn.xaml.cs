@@ -27,10 +27,7 @@ namespace ИП_Хевеши.UI.Winds
             InitializeComponent();
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+      
 
         private void btnAddProvider_Click(object sender, RoutedEventArgs e)
         {

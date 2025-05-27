@@ -11,26 +11,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ИП_Хевеши.Classes;
 
-namespace ИП_Хевеши.UI.Winds.TipWinds
+namespace ИП_Хевеши.UI.Winds
 {
     /// <summary>
-    /// Логика взаимодействия для HelperWn.xaml
+    /// Логика взаимодействия для AddBuyerWn.xaml
     /// </summary>
-    public partial class HelperWn : Window
+    public partial class AddBuyerWn : Window
     {
-       
-        public HelperWn(string Title,string HelperText)
+        public AddBuyerWn()
         {
             InitializeComponent();
-            tbHelper.Text = HelperText;
-            lTitle.Content = Title;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+     
+
+        private void btnAddBuyer_Click(object sender, RoutedEventArgs e)
         {
-            HelperCollectionWn helperCollectionWn = new HelperCollectionWn();
-            helperCollectionWn.Show();
+            AddBuyerBack addBuyerBack = new AddBuyerBack();
+            addBuyerBack.AddBuyer(tbBuyerName, tbCountry);
         }
     }
 }

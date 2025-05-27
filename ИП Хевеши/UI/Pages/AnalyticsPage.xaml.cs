@@ -1,5 +1,4 @@
-﻿using LiveCharts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,33 +21,16 @@ namespace ИП_Хевеши.UI.Pages
     /// </summary>
     public partial class AnalyticsPage : Page
     {
-        private readonly AnalyticsViewModel _viewModel;
         public AnalyticsPage()
         {
             InitializeComponent();
-            _viewModel = new AnalyticsViewModel();
-            DataContext = _viewModel;
+            DataContext = new AnalyticsViewModel();
         }
-
-        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        private void Export_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.ApplyFilters();
-        }
-
-        private void ResetFilterButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ResetFilters();
-        }
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            if (NavigationService.CanGoBack)
+            if (DataContext is AnalyticsViewModel vm)
             {
-                NavigationService.GoBack();
-            }
-            else
-            {
-                // Если нет, можно показать сообщение об ошибке или выполнить другое действие
-                MessageBox.Show("Нет предыдущей страницы.");
+                vm.ExportAnalyticsToExcel();
             }
         }
     }

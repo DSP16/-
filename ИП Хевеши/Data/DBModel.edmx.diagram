@@ -29,6 +29,14 @@
         <AssociationConnector Association="Model.FK_Arrivals_Providers" />
         <AssociationConnector Association="Model.FK_Issuance_Users" />
         <AssociationConnector Association="Model.FK_Users_Roles" />
+        <EntityTypeShape EntityType="Model.Receipts" Width="1.5" PointX="10.625" PointY="5.125" />
+        <AssociationConnector Association="Model.FK__Arrivals__Receip__17F790F9" />
+        <AssociationConnector Association="Model.FK__Receipts__Provid__160F4887" />
+        <AssociationConnector Association="Model.FK__Receipts__UserID__17036CC0" />
+        <EntityTypeShape EntityType="Model.IssuanceReceipts" Width="1.5" PointX="11.25" PointY="1.25" />
+        <AssociationConnector Association="Model.FK__IssuanceR__Buyer__1AD3FDA4" />
+        <AssociationConnector Association="Model.FK__Issuance__Receip__1CBC4616" />
+        <AssociationConnector Association="Model.FK__IssuanceR__UserI__1BC821DD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -37,5 +37,7 @@ namespace ИП_Хевеши.Data
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Zones> Zones { get; set; }
         public virtual DbSet<Providers> Providers { get; set; }
+        public virtual DbSet<Receipts> Receipts { get; set; }
+        public virtual DbSet<IssuanceReceipts> IssuanceReceipts { get; set; }
     }
 }

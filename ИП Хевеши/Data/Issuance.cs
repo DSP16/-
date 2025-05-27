@@ -20,9 +20,11 @@ namespace ИП_Хевеши.Data
         public Nullable<int> Quantity { get; set; }
         public Nullable<int> BuyerID { get; set; }
         public Nullable<int> UserID { get; set; }
+        public Nullable<int> ReceiptID { get; set; }
     
         public virtual Buyers Buyers { get; set; }
         public virtual Components Components { get; set; }
         public virtual Users Users { get; set; }
+        public virtual IssuanceReceipts IssuanceReceipts { get; set; }
     }
 }

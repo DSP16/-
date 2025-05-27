@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ИП_Хевеши.UI.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="460" d:DesignWidth="450"
+      d:DesignHeight="420" d:DesignWidth="450"
       Title="LoginPage"
       ShowsNavigationUI="False">
 
@@ -18,7 +18,7 @@
                 <RowDefinition />
                 <RowDefinition Height="0.4*" />
                 <RowDefinition/>
-                <RowDefinition Height="0.8*"/>
+               
                 
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="GhostWhite"/>
@@ -38,16 +38,10 @@
             <CheckBox x:Name="cbHideShowPassword" Style="{StaticResource CheckBoxes}" Unchecked="cbHideShowPassword_Unchecked"
                       Grid.Row="3" VerticalAlignment="Center" Margin="80,0,0,3" Content=" Видимость пароля" 
                       IsChecked="False" Checked="cbHideShowPassword_Checked"/>
-            <StackPanel Orientation="Horizontal" Grid.Row="4">
-                <Image x:Name="CaptchaImage"  Margin="77,10,0,0"  Width="150" Height="50" />
-                <TextBox x:Name="CaptchaTextBox" Width="125" TabIndex="3" Height="25" HorizontalAlignment="Center"  
-                         Style="{StaticResource TextBoxes}" Margin="4,-20,0,0"/>
-            </StackPanel>
             
-            <Button x:Name="btnRefreshCaptcha" Width="125" Grid.Row="4" Height="25" Content="Обновить"
-                    Style="{StaticResource Buttons}" Margin="155,40,0,0" Click="btnRefreschCaptcha_Click"/>
-
-            <Button x:Name="btnAuthorize" Width="280" Height="40" Grid.Row="5" Style="{StaticResource Buttons}" 
+            
+          
+            <Button x:Name="btnAuthorize" Width="280" Height="40" Grid.Row="4" Style="{StaticResource Buttons}" 
                     Content="Войти"  Click="btnAuthorize_Click" />
         </Grid>
     </Grid>

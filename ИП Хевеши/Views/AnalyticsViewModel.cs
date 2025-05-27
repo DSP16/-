@@ -1,5 +1,5 @@
-﻿using LiveCharts.Wpf;
-using LiveCharts;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,534 +11,321 @@ using ИП_Хевеши.Data;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Data.Entity;
+using OxyPlot;
+using OxyPlot.Series;
+using OxyPlot.Axes;
+using ClosedXML.Excel;
+using Microsoft.Win32;
 
 namespace ИП_Хевеши.Views
 {
-    public class DataPoint
+    public class AnalyticsViewModel
     {
-        public string Category { get; set; }
-        public decimal Value { get; set; }
-    }
+        public ObservableCollection<DeadProductEntry> DeadProducts { get; set; }
 
-    public class ProviderComponentData
-    {
-        public string ProviderName { get; set; }
-        public string ComponentName { get; set; }
-        public int Quantity { get; set; }
-        public decimal PurchasePrice { get; set; }
-        public DateTime ArrivalDate { get; set; }
-    }
+        public ObservableCollection<TopProductEntry> TopProducts { get; set; }
+        public PlotModel RevenueForecastModel { get; set; }
 
-    public class AnalyticsViewModel : INotifyPropertyChanged
-    {
+        public PlotModel RevenuePlotModel { get; private set; }
+        public PlotModel ForecastPlotModel { get; private set; }
 
-        // 1. Свойства для привязки к UI
-        private DateTime? _startDate;
-        public DateTime? StartDate
-        {
-            get { return _startDate; }
-            set { _startDate = value; OnPropertyChanged(nameof(StartDate)); }
-        }
-
-        private DateTime? _endDate;
-        public DateTime? EndDate
-        {
-            get { return _endDate; }
-            set { _endDate = value; OnPropertyChanged(nameof(EndDate)); }
-        }
-
-        private string _selectedComponentName;
-        public string SelectedComponentName
-        {
-            get { return _selectedComponentName; }
-            set { _selectedComponentName = value; OnPropertyChanged(nameof(SelectedComponentName)); }
-        }
-
-        private List<string> _componentNames;
-        public List<string> ComponentNames
-        {
-            get { return _componentNames; }
-            set { _componentNames = value; OnPropertyChanged(nameof(ComponentNames)); }
-        }
-
-        private string _errorMessage;
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { _errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); }
-        }
-
-        private bool _hasError;
-        public bool HasError
-        {
-            get { return _hasError; }
-            set { _hasError = value; OnPropertyChanged(nameof(HasError)); }
-        }
-        private ObservableCollection<ProviderComponentData> _providerComponentData;
-        public ObservableCollection<ProviderComponentData> ProviderComponentData
-        {
-            get => _providerComponentData;
-            set { _providerComponentData = value; OnPropertyChanged(nameof(ProviderComponentData)); }
-        }
-     
-
-        // Для принудительного обновления (добавьте метод)
-        public void RefreshCharts()
-        {
-            OnPropertyChanged(nameof(ProvidersChartSeries));
-            OnPropertyChanged(nameof(ProvidersLabels));
-        }
-        // Данные для графиков
-        public SeriesCollection SeriesCollection { get; set; }
-        public List<string> Labels { get; set; }
-        public Func<double, string> YFormatter { get; } = value => value.ToString("N0");
-        public SeriesCollection PieChartSeries { get; set; }
-        public SeriesCollection ProvidersChartSeries { get;  } = new SeriesCollection();
-        public List<string> ProvidersLabels { get;  } = new List<string>();
-
-        // 2. Конструктор
         public AnalyticsViewModel()
         {
-            InitializeProperties();
-            Task.Run(LoadComponentNames);
-
-            ProvidersLabels = new List<string>();
- 
+            LoadRevenueChart();
+            LoadTopProducts();
+            LoadDeadProducts();
+            LoadRevenueChart();
+            LoadRevenueForecast();
         }
-
-        private void InitializeProperties()
+        private void LoadRevenueForecast()
         {
-            StartDate = DateTime.Now.AddMonths(-1);
-            EndDate = DateTime.Now;
-            ComponentNames = new List<string>();
-            ProviderComponentData = new ObservableCollection<ProviderComponentData>();
+            RevenueForecastModel = new PlotModel { Title = "Прогноз выручки" };
 
-            SeriesCollection = new SeriesCollection();
-            Labels = new List<string>();
-           
-
-            PieChartSeries = new SeriesCollection();
-
-          
-        }
-
-        // 3. Методы для загрузки данных
-        public async Task LoadComponentNames()
-        {
-            await SafeExecuteAsync(async () =>
+            // Оси
+            RevenueForecastModel.Axes.Add(new DateTimeAxis
             {
-                using (var db = new ИП_ХевешиEntities())
-                {
-                    ComponentNames = await Task.Run(() =>
-                        db.Components.Select(c => c.Name).Distinct().ToList());
-                }
-            }, "Ошибка при загрузке названий комплектующих");
-        }
-
-        public async void ApplyFilters()
-        {
-            try
-            {
-                ErrorMessage = null;
-                HasError = false;
-
-                using (var db = new ИП_ХевешиEntities()) // Замените YourDbContext на ваш контекст
-                {
-                    // 1. Фильтрация данных
-                    var incoming = db.Arrivals
-                        .Where(a => a.ArrivalDate >= StartDate && a.ArrivalDate <= EndDate);
-
-                    var outgoing = db.Issuance
-                        .Where(i => i.IssuanceDate >= StartDate && i.IssuanceDate <= EndDate);
-
-                    if (!string.IsNullOrEmpty(SelectedComponentName))
-                    {
-                        incoming = incoming.Where(a => a.Components.Name == SelectedComponentName);
-                        outgoing = outgoing.Where(i => i.Components.Name == SelectedComponentName);
-                    }
-
-                    // 2. Получаем данные для всех диаграмм
-                    var (chartData, pieData, providerData) = await Task.Run(() =>
-                    {
-                        // Данные для первой диаграммы (поступления/расходы)
-                        var incomingGrouped = incoming
-                            .GroupBy(a => a.ArrivalDate.Month)
-                            .Select(g => new
-                            {
-                                Month = g.Key,
-                                Total = g.Sum(a => a.Quantity * a.PurchasePrice ?? 0)
-                            })
-                            .ToList();
-
-                        var outgoingGrouped = outgoing
-                            .GroupBy(i => i.IssuanceDate.Value.Month)
-                            .Select(g => new
-                            {
-                                Month = g.Key,
-                                Total = g.Sum(i => i.Quantity * i.Components.Price ?? 0)
-                            })
-                            .ToList();
-
-                        var chartResult = new List<IncomingOutgoingData>();
-                        if (StartDate.HasValue && EndDate.HasValue)
-                        {
-                            for (int i = StartDate.Value.Month; i <= EndDate.Value.Month; i++)
-                            {
-                                string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
-                                decimal incomingTotal = incomingGrouped.Where(x => x.Month == i).Sum(x => x.Total);
-                                decimal outgoingTotal = outgoingGrouped.Where(x => x.Month == i).Sum(x => x.Total);
-
-                                chartResult.Add(new IncomingOutgoingData
-                                {
-                                    Month = monthName,
-                                    Incoming = incomingTotal,
-                                    Outgoing = outgoingTotal
-                                });
-                            }
-                        }
-
-                        // Данные для второй диаграммы (круговая по типам компонентов)
-                        var pieResult = db.Components
-                            .GroupBy(c => c.Type)
-                            .Select(g => new DataPoint
-                            {
-                                Category = g.Key,
-                                Value = g.Sum(c => c.Quantity * c.Price ?? 0)
-                            })
-                            .ToList();
-
-                        // Данные для третьей диаграммы (поставщики - количество)
-                        var providerResult = incoming
-                            .GroupBy(a => a.Providers.Name) // Убедитесь, что имя свойства верное
-                            .Select(g => new DataPoint
-                            {
-                                Category = g.Key,
-                                Value = (decimal)g.Sum(s => s.Quantity) // Только количество!
-                            })
-                            .ToList();
-
-                        return (chartResult, pieResult, providerResult);
-                    });
-
-                    if (chartData == null)
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ErrorMessage = "Нет данных для выбранного периода.";
-                            HasError = true;
-                            ClearAllCharts();
-                        });
-                        return;
-                    }
-
-                    // 3. Обновляем UI
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        // Очищаем предыдущие данные
-                        Labels.Clear();
-                        SeriesCollection.Clear();
-                        PieChartSeries.Clear();
-                        ProvidersChartSeries.Clear();
-                        ProvidersLabels.Clear();
-
-                        // Проверка на пустые данные
-                        if (!chartData.Any() && !pieData.Any() && !providerData.Any())
-                        {
-                            ErrorMessage = "Нет данных для выбранного периода.";
-                            HasError = true;
-                            return;
-                        }
-
-                        // 1. Первая диаграмма (поступления/расходы)
-                        if (chartData.Any())
-                        {
-                            var incomingSeries = new LineSeries
-                            {
-                                Title = "Поступления",
-                                Values = new ChartValues<decimal>(chartData.Select(d => d.Incoming)),
-                                LineSmoothness = 0
-                            };
-
-                            var outgoingSeries = new LineSeries
-                            {
-                                Title = "Расходы",
-                                Values = new ChartValues<decimal>(chartData.Select(d => d.Outgoing)),
-                                LineSmoothness = 0
-                            };
-
-                            Labels.AddRange(chartData.Select(d => d.Month));
-                            SeriesCollection.Add(incomingSeries);
-                            SeriesCollection.Add(outgoingSeries);
-                        }
-
-                        // 2. Вторая диаграмма (круговая по типам компонентов)
-                        if (pieData.Any())
-                        {
-                            foreach (var item in pieData)
-                            {
-                                PieChartSeries.Add(new PieSeries
-                                {
-                                    Title = item.Category,
-                                    Values = new ChartValues<decimal> { item.Value },
-                                    DataLabels = true,
-                                    LabelPoint = point => $"{item.Category}: {point.Y:C0}"
-                                });
-                            }
-                        }
-
-                        // 3. Третья диаграмма (поставщики - количество)
-                        if (providerData.Any())
-                        {
-                            ProvidersChartSeries.Clear();
-                            ProvidersLabels.Clear();
-
-                            var providerComponentDataList = (from a in db.Arrivals
-                                                             select new ProviderComponentData
-                                                             {
-                                                                 ProviderName = a.Providers.Name,
-                                                                 ComponentName = a.Components.Name,
-                                                                 Quantity = (int)a.Quantity,
-                                                                 PurchasePrice = (decimal)a.PurchasePrice,
-                                                                 ArrivalDate = a.ArrivalDate
-                                                             }).ToList();
-                            
-                            var diagramProvierData = providerComponentDataList
-                                .GroupBy(s => s.ProviderName)
-                                .Select(g => new DataPoint
-                                {
-                                    Category = g.Key,
-                                    Value = g.Sum(s => s.Quantity )
-                                })
-                                .ToList();
-
-                            
-                            if (providerData.Any() == true)
-                            {
-                                
-                                var providerSeries = new ColumnSeries
-                                {
-                                    Title = "Поставщики",
-                                    Values = new ChartValues<decimal>(diagramProvierData.Select(p => p.Value)),
-                                    DataLabels = true
-                                };
-
-                                
-                                ProvidersChartSeries.Add(providerSeries);
-                                ProvidersLabels.AddRange(diagramProvierData.Select(p => p.Category));
-
-                                ProvidersChartSeries.Add(providerSeries);
-                                ProvidersLabels.AddRange(providerData.Select(p => p.Category));
-
-                                // Принудительное обновление
-                                OnPropertyChanged(nameof(ProvidersChartSeries));
-                                OnPropertyChanged(nameof(ProvidersLabels));
-
-                            }
-                            if (providerData == null)
-                            {
-                                Application.Current.Dispatcher.Invoke(() =>
-                                {
-                                    ErrorMessage = "Нет данных о поставщиках за выбранный период.";
-                                    HasError = true;
-                                    ClearAllCharts();
-                                });
-                                return;
-                            }
-
-                            // Уведомляем об изменениях
-                            OnPropertyChanged(nameof(SeriesCollection));
-                            OnPropertyChanged(nameof(Labels));
-                            OnPropertyChanged(nameof(PieChartSeries));
-                            OnPropertyChanged(nameof(ProvidersChartSeries));
-                            OnPropertyChanged(nameof(ProvidersLabels));
-                        }
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    ErrorMessage = $"Ошибка при применении фильтров: {ex.Message}";
-                    HasError = true;
-                    MessageBox.Show(ErrorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
-            }
-        }
-        private void ClearAllCharts()
-        {
-            SeriesCollection.Clear();
-            Labels.Clear();
-            PieChartSeries.Clear();
-            ProvidersChartSeries.Clear();
-            ProvidersLabels.Clear();
-        }
-
-        private List<IncomingOutgoingData> GetIncomingOutgoingData(
-            IQueryable<Arrivals> incoming,
-            IQueryable<Issuance> outgoing)
-        {
-            var incomingGrouped = incoming
-                .GroupBy(a => a.ArrivalDate.Month)
-                .OrderBy(g => g.Key)
-                .Select(g => new
-                {
-                    Month = g.Key,
-                    Total = g.Sum(a => a.Quantity * a.PurchasePrice)
-                }).ToList();
-
-            var outgoingGrouped = outgoing
-                .GroupBy(i => i.IssuanceDate.Value.Month)
-                .OrderBy(g => g.Key)
-                .Select(g => new
-                {
-                    Month = g.Key,
-                    Total = g.Sum(i => i.Quantity * i.Components.Price)
-                }).ToList();
-
-            var result = new List<IncomingOutgoingData>();
-            if (StartDate.HasValue && EndDate.HasValue)
-            {
-                for (int i = StartDate.Value.Month; i <= EndDate.Value.Month; i++)
-                {
-                    string monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(i);
-                    decimal incomingTotal = incomingGrouped.Where(x => x.Month == i).Sum(x => x.Total ?? 0);
-                    decimal outgoingTotal = outgoingGrouped.Where(x => x.Month == i).Sum(x => x.Total ?? 0);
-
-                    result.Add(new IncomingOutgoingData
-                    {
-                        Month = monthName,
-                        Incoming = incomingTotal,
-                        Outgoing = outgoingTotal
-                    });
-                }
-            }
-            return result;
-        }
-
-        private void UpdateChartsAndGrid(
-            List<IncomingOutgoingData> chartData,
-            List<DataPoint> stockByComponentType,
-            List<DataPoint> supplierData,
-            List<ProviderComponentData> supplierComponentData)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                // Очистка старых данных
-                Labels.Clear();
-                SeriesCollection.Clear();
-                PieChartSeries.Clear();
-                ProvidersLabels.Clear();
-                ProvidersChartSeries.Clear();
-                ProviderComponentData.Clear();
-
-                // 1. Обновление DataGrid
-                if (supplierComponentData != null)
-                {
-                    foreach (var item in supplierComponentData)
-                    {
-                        ProviderComponentData.Add(item);
-                    }
-                }
-
-                // 2. Обновление первой диаграммы (поступления/расходы)
-                if (chartData != null && chartData.Any())
-                {
-                    var incomingSeries = new LineSeries
-                    {
-                        Title = "Поступления",
-                        Values = new ChartValues<decimal>(chartData.Select(d => d.Incoming)),
-                        LineSmoothness = 0
-                    };
-
-                    var outgoingSeries = new LineSeries
-                    {
-                        Title = "Расходы",
-                        Values = new ChartValues<decimal>(chartData.Select(d => d.Outgoing)),
-                        LineSmoothness = 0
-                    };
-
-                    Labels.AddRange(chartData.Select(d => d.Month));
-                    SeriesCollection.Add(incomingSeries);
-                    SeriesCollection.Add(outgoingSeries);
-                }
-
-                // 3. Обновление круговой диаграммы (по типам)
-                if (stockByComponentType != null && stockByComponentType.Any())
-                {
-                    foreach (var dataPoint in stockByComponentType)
-                    {
-                        PieChartSeries.Add(new PieSeries
-                        {
-                            Title = dataPoint.Category,
-                            Values = new ChartValues<decimal> { dataPoint.Value },
-                            DataLabels = true,
-                            LabelPoint = point => $"{dataPoint.Category} ({point.Y:C0})"
-                        });
-                    }
-                }
-
-                // 4. Обновление третьей диаграммы (по поставщикам)
-                if (supplierData != null && supplierData.Any())
-                {
-                    var columnSeries = new ColumnSeries
-                    {
-                        Title = "Сумма закупок",
-                        Values = new ChartValues<decimal>(supplierData.Select(d => d.Value)),
-                        DataLabels = true
-                    };
-
-                    ProvidersLabels.AddRange(supplierData.Select(d => d.Category));
-                    ProvidersChartSeries.Add(columnSeries);
-                }
-
-                // Уведомление об изменениях
-                OnPropertyChanged(nameof(Labels));
-                OnPropertyChanged(nameof(SeriesCollection));
-                OnPropertyChanged(nameof(PieChartSeries));
-                OnPropertyChanged(nameof(ProvidersLabels));
-                OnPropertyChanged(nameof(ProvidersChartSeries));
-                OnPropertyChanged(nameof(ProviderComponentData));
+                Position = AxisPosition.Bottom,
+                StringFormat = "MMM yyyy",
+                Title = "Месяц",
+                IntervalType = DateTimeIntervalType.Months,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot
             });
+
+            RevenueForecastModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Выручка",
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot
+            });
+
+            List<RevenueDataPoint> revenueByMonth;
+
+            using (var db = new ИП_ХевешиEntities())
+            {
+                var raw = db.Issuance
+                    .Where(i => i.IssuanceDate != null && i.Components != null)
+                    .ToList();
+
+                revenueByMonth = raw
+                    .GroupBy(i => new { i.IssuanceDate.Value.Year, i.IssuanceDate.Value.Month })
+                    .Select(g => new RevenueDataPoint
+                    {
+                        Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        Revenue = (decimal)g.Sum(x => x.Quantity * x.Components.Price)
+                    })
+                    .OrderBy(dp => dp.Date)
+                    .ToList();
+            }
+
+            // Серия точек
+            var series = new LineSeries
+            {
+                Title = "Факт + Прогноз",
+                MarkerType = MarkerType.Circle,
+                Color = OxyColors.Green
+            };
+
+            // Добавляем факт
+            foreach (var item in revenueByMonth)
+            {
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(item.Date), (double)item.Revenue));
+            }
+
+            // Прогноз
+            if (revenueByMonth.Count > 1)
+            {
+                var x = Enumerable.Range(0, revenueByMonth.Count).Select(i => (double)i).ToArray();
+                var y = revenueByMonth.Select(p => (double)p.Revenue).ToArray();
+
+                double avgX = x.Average();
+                double avgY = y.Average();
+
+                double k = x.Zip(y, (xi, yi) => (xi - avgX) * (yi - avgY)).Sum()
+                            / x.Sum(xi => Math.Pow(xi - avgX, 2));
+
+                double b = avgY - k * avgX;
+
+                var nextMonth = revenueByMonth.Last().Date.AddMonths(1);
+                double forecastY = k * x.Length + b;
+
+                // Точка прогноза
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nextMonth), forecastY));
+            }
+
+            RevenueForecastModel.Series.Add(series);
         }
 
-        public void ResetFilters()
+        private void LoadDeadProducts()
         {
-            StartDate = DateTime.Now.AddMonths(-1);
-            EndDate = DateTime.Now;
-            SelectedComponentName = null;
-            ClearAllCharts();
-        }
+            using (var db = new ИП_ХевешиEntities())
+            {
+                var cutoffDate = DateTime.Now.AddDays(-60);
 
-        // 4. Вспомогательные методы
-        private async Task SafeExecuteAsync(Func<Task> action, string errorPrefix)
+                // Последние даты продаж по каждому компоненту
+                var lastSales = db.Issuance
+                    .Where(i => i.IssuanceDate != null)
+                    .GroupBy(i => i.ComponentID)
+                    .Select(g => new
+                    {
+                        ComponentID = g.Key,
+                        LastSoldDate = g.Max(i => i.IssuanceDate)
+                    })
+                    .ToList();
+
+                // Выбираем только тех, у кого дата последней продажи > 60 дней назад
+                var dead = lastSales
+                    .Where(x => x.LastSoldDate < cutoffDate)
+                    .Join(db.Components, x => x.ComponentID, c => c.ID, (x, c) => new DeadProductEntry
+                    {
+                        Name = c.Name,
+                        LastSoldDate = x.LastSoldDate
+                    })
+                    .OrderBy(x => x.LastSoldDate)
+                    .Take(5) // топ-5
+                    .ToList();
+
+                DeadProducts = new ObservableCollection<DeadProductEntry>(dead);
+            }
+        }
+        private void LoadRevenueChart()
+        {
+            RevenuePlotModel = new PlotModel { Title = "Выручка по месяцам" };
+
+            // Оси
+            RevenuePlotModel.Axes.Add(new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = "MMM yyyy",
+                Title = "Месяц",
+                IntervalType = DateTimeIntervalType.Months,
+                MinorIntervalType = DateTimeIntervalType.Months,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot
+            });
+
+            RevenuePlotModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Выручка",
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot
+            });
+
+            // Данные
+            List<RevenueDataPoint> monthlyRevenue;
+            using (var db = new ИП_ХевешиEntities())
+            {
+                var grouped = db.Issuance
+                    .Where(i => i.IssuanceDate != null)
+                    .ToList() // переводим в память
+                    .GroupBy(i => new { i.IssuanceDate.Value.Year, i.IssuanceDate.Value.Month })
+                    .Select(g => new RevenueDataPoint
+                    {
+                        Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        Revenue = g.Sum(x => (decimal)(x.Quantity * x.Components.Price))
+                    })
+                    .OrderBy(x => x.Date)
+                    .ToList();
+
+                monthlyRevenue = grouped;
+            }
+
+            // Добавляем точки на график
+            var lineSeries = new LineSeries
+            {
+                Title = "Выручка",
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.Red,
+                MarkerFill = OxyColors.LightPink
+            };
+
+            foreach (var item in monthlyRevenue)
+            {
+                lineSeries.Points.Add(DateTimeAxis.CreateDataPoint(item.Date, (double)item.Revenue));
+            }
+
+            RevenuePlotModel.Series.Add(lineSeries);
+        }
+        private void LoadTopProducts()
+        {
+            using (var db = new ИП_ХевешиEntities())
+            {
+                var top = db.Issuance
+                    .Where(i => i.ComponentID != null)
+                    .GroupBy(i => i.Components.Name)
+                    .Select(g => new
+                    {
+                        Name = g.Key,
+                        Total = g.Sum(x => x.Quantity)
+                    })
+                    .OrderByDescending(x => x.Total)
+                    .Take(5)
+                    .ToList();
+
+                TopProducts = new ObservableCollection<TopProductEntry>(
+                    top.Select(x => new TopProductEntry
+                    {
+                        Name = x.Name,
+                        Quantity = x.Total ?? 0
+                    })
+                );
+            }
+        }
+        public void ExportAnalyticsToExcel()
         {
             try
             {
-                await action();
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    FileName = $"Аналитика - {DateTime.Today}.xlsx",
+                    DefaultExt = ".xlsx",
+                    Filter = "Excel файлы (*.xlsx)|*.xlsx"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    using (var workbook = new XLWorkbook())
+                    {
+                        // 1. Выручка по месяцам
+                        var revenueSheet = workbook.Worksheets.Add("Выручка");
+                        revenueSheet.Cell(1, 1).Value = "Месяц";
+                        revenueSheet.Cell(1, 2).Value = "Выручка";
+
+                        var lineSeries = RevenueForecastModel.Series.OfType<LineSeries>().FirstOrDefault();
+                        var points = lineSeries?.Points ?? new List<DataPoint>();
+                        int row = 2;
+                        foreach (var point in points)
+                        {
+                            var date = DateTimeAxis.ToDateTime(point.X);
+                            var revenue = point.Y;
+                            revenueSheet.Cell(row, 1).Value = date.ToString("MMMM yyyy");
+                            revenueSheet.Cell(row, 2).Value = revenue;
+                            row++;
+                        }
+
+                        // 2. Топ-5 товаров
+                        var topSheet = workbook.Worksheets.Add("Топ товары");
+                        topSheet.Cell(1, 1).Value = "Наименование";
+                        topSheet.Cell(1, 2).Value = "Продано (шт)";
+                        for (int i = 0; i < TopProducts.Count; i++)
+                        {
+                            topSheet.Cell(i + 2, 1).Value = TopProducts[i].Name;
+                            topSheet.Cell(i + 2, 2).Value = TopProducts[i].Quantity;
+                        }
+
+                        // 3. Неликвиды
+                        var deadSheet = workbook.Worksheets.Add("Неликвиды");
+                        deadSheet.Cell(1, 1).Value = "Наименование";
+                        deadSheet.Cell(1, 2).Value = "Дата последней продажи";
+                        for (int i = 0; i < DeadProducts.Count; i++)
+                        {
+                            deadSheet.Cell(i + 2, 1).Value = DeadProducts[i].Name;
+                            deadSheet.Cell(i + 2, 2).Value = DeadProducts[i].LastSoldDate;
+                        }
+
+                        // 4. Прогноз
+                        var forecastSheet = workbook.Worksheets.Add("Прогноз");
+                        forecastSheet.Cell(1, 1).Value = "Месяц";
+                        forecastSheet.Cell(1, 2).Value = "Выручка";
+                        var forecastSeries = RevenueForecastModel.Series.OfType<LineSeries>().FirstOrDefault();
+                        var forecastPoints = forecastSeries?.Points ?? new List<DataPoint>();
+                        for (int i = 0; i < forecastPoints.Count; i++)
+                        {
+                            var point = forecastPoints[i];
+                            forecastSheet.Cell(i + 2, 1).Value = DateTimeAxis.ToDateTime(point.X).ToString("MMMM yyyy");
+                            forecastSheet.Cell(i + 2, 2).Value = point.Y;
+                        }
+
+                        workbook.SaveAs(saveFileDialog.FileName);
+                        MessageBox.Show("Отчет успешно сохранен.");
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    ErrorMessage = $"{errorPrefix}: {ex.Message}";
-                    HasError = true;
-                    MessageBox.Show(ErrorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
+                MessageBox.Show($"Ошибка при экспорте: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public class TopProductEntry
+        {
+            public string Name { get; set; }
+            public int Quantity { get; set; }
+            public string Display => $"шт";
+        }
+        private class RevenueDataPoint
+        {
+            public DateTime Date { get; set; }
+            public decimal Revenue { get; set; }
 
-        // 5. INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public class IncomingOutgoingData
-    {
-        public string Month { get; set; }
-        public decimal Incoming { get; set; }
-        public decimal Outgoing { get; set; }
-        public int MonthNumber { get; internal set; }
+        }
+        public class DeadProductEntry
+        {
+            public string Name { get; set; }
+            public DateTime? LastSoldDate { get; set; }
+        }
     }
 }
+    

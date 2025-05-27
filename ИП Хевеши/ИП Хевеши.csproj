@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,11 +37,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClosedXML, Version=0.104.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ClosedXML.0.104.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    <Reference Include="ClosedXML, Version=0.105.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.105.0\lib\netstandard2.0\ClosedXML.dll</HintPath>
     </Reference>
     <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
-      <HintPath>..\packages\ClosedXML.Parser.1.2.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
+      <HintPath>..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -74,9 +76,19 @@
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
     </Reference>
-    <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RBush.4.0.0\lib\net47\RBush.dll</HintPath>
+    <Reference Include="OxyPlot, Version=2.2.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Core.2.2.0\lib\net462\OxyPlot.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot.Wpf, Version=2.2.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Wpf.2.2.0\lib\net462\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf.Shared, Version=2.2.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Wpf.Shared.2.2.0\lib\net462\OxyPlot.Wpf.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c77e27b81f4d0187, processorArchitecture=MSIL">
+      <HintPath>..\packages\RBush.Signed.4.0.0\lib\net47\RBush.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
       <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
@@ -98,6 +110,7 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Printing" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -124,18 +137,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\AddArrivalBack.cs" />
+    <Compile Include="Classes\AddBuyerBack.cs" />
     <Compile Include="Classes\AddComponentBack.cs" />
-    <Compile Include="Classes\AddIssuanceBack.cs" />
     <Compile Include="Classes\AddProviderBack.cs" />
     <Compile Include="Classes\AuthorizeBack.cs" />
-    <Compile Include="Classes\CaptchaGenerate.cs" />
+    <Compile Include="UI\Pages\AnalyticsPage.xaml.cs">
+      <DependentUpon>AnalyticsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Winds\AddBuyerWn.xaml.cs">
+      <DependentUpon>AddBuyerWn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Winds\CreateIssuanceReceiptWindow.xaml.cs">
+      <DependentUpon>CreateIssuanceReceiptWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\DGridArrivalsLoadData.cs" />
     <Compile Include="Classes\LoadProductCards.cs" />
     <Compile Include="Classes\LoadRemainsCardBack.cs" />
     <Compile Include="Classes\Manager.cs" />
-    <Compile Include="Classes\ReportsBack.cs" />
-    <Compile Include="Classes\SearchArrivalsBack.cs" />
     <Compile Include="Classes\SearchComponentsBack.cs" />
     <Compile Include="Data\Arrivals.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
@@ -167,6 +185,9 @@
     <Compile Include="Data\Issuance.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\IssuanceReceipts.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\Manufacturers.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -174,6 +195,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Providers.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Receipts.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Roles.cs">
@@ -188,14 +212,11 @@
     <Compile Include="Data\Zones.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\AnalyticsPage.xaml.cs">
-      <DependentUpon>AnalyticsPage.xaml</DependentUpon>
+    <Compile Include="UI\Pages\IssuanceReceiptDetailsPage.xaml.cs">
+      <DependentUpon>IssuanceReceiptDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\ArrivalsPage.xaml.cs">
-      <DependentUpon>ArrivalsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\IssuancesPage.xaml.cs">
-      <DependentUpon>IssuancesPage.xaml</DependentUpon>
+    <Compile Include="UI\Pages\IssuanceReceiptsPage.xaml.cs">
+      <DependentUpon>IssuanceReceiptsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -203,23 +224,32 @@
     <Compile Include="UI\Pages\MainContentPage.xaml.cs">
       <DependentUpon>MainContentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\ReceiptDetailsPage.xaml.cs">
+      <DependentUpon>ReceiptDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\ReceiptPage.xaml.cs">
+      <DependentUpon>ReceiptPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\ProductCard.xaml.cs">
       <DependentUpon>ProductCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Winds\AddArrivalWn.xaml.cs">
-      <DependentUpon>AddArrivalWn.xaml</DependentUpon>
+    <Compile Include="UI\Winds\AddArrivalToReceiptWindow.xaml.cs">
+      <DependentUpon>AddArrivalToReceiptWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Winds\AddComponentWn.xaml.cs">
       <DependentUpon>AddComponentWn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Winds\AddIssuanceWn.xaml.cs">
-      <DependentUpon>AddIssuanceWn.xaml</DependentUpon>
+    <Compile Include="UI\Winds\AddIssuanceToReceiptWindow.xaml.cs">
+      <DependentUpon>AddIssuanceToReceiptWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Winds\AddProviderWn.xaml.cs">
       <DependentUpon>AddProviderWn.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Winds\AuthorizeWn.xaml.cs">
       <DependentUpon>AuthorizeWn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Winds\CreateArrivalReceiptWindow.xaml.cs">
+      <DependentUpon>CreateArrivalReceiptWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Winds\MainContentWn.xaml.cs">
       <DependentUpon>MainContentWn.xaml</DependentUpon>
@@ -228,9 +258,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Winds\ReportsWn.xaml.cs">
-      <DependentUpon>ReportsWn.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Winds\TipWinds\HelperCollectionWn.xaml.cs">
       <DependentUpon>HelperCollectionWn.xaml</DependentUpon>
     </Compile>
@@ -238,16 +265,28 @@
       <DependentUpon>HelperWn.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AnalyticsViewModel.cs" />
+    <Compile Include="Views\CurrentUser.cs" />
+    <Compile Include="Views\IssuanceReceiptsViewModel.cs" />
     <Compile Include="Views\ProviderComponentsData.cs" />
+    <Compile Include="Views\Receipt.cs" />
+    <Compile Include="Views\ReceiptViewModel.cs" />
     <Page Include="UI\Pages\AnalyticsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\ArrivalsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="UI\Winds\AddBuyerWn.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\IssuancesPage.xaml">
+    <Page Include="UI\Winds\CreateIssuanceReceiptWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\IssuanceReceiptDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\IssuanceReceiptsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -259,19 +298,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\Pages\ReceiptDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\ReceiptPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\UserControls\ProductCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\Winds\AddArrivalWn.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="UI\Winds\AddArrivalToReceiptWindow.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Winds\AddComponentWn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Winds\AddIssuanceWn.xaml">
+    <Page Include="UI\Winds\AddIssuanceToReceiptWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,13 +330,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\Winds\CreateArrivalReceiptWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Winds\MainContentWn.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\Winds\ReportsWn.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Winds\TipWinds\HelperCollectionWn.xaml">
       <SubType>Designer</SubType>
@@ -363,4 +410,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets" Condition="Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets'))" />
+  </Target>
 </Project>

@@ -11,7 +11,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.25*"/>
+            
             <ColumnDefinition>
         </ColumnDefinition>
 
@@ -24,21 +24,21 @@
 
         <Grid  Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.05*"/>
+                
                 <ColumnDefinition Width="0.6*"/>
                 <ColumnDefinition Width="0.4*"/>
                 <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnRemains" Grid.Column="1" Style="{StaticResource AutoWideButtons}" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,25,25,75" Content="Остатки" Click="btnRemains_Click" />
-            <Button x:Name="btnOpenAddComponent" Grid.Column="1" HorizontalAlignment="Left" Width="217" VerticalAlignment="Bottom" Content="Добавить компонент" Style="{StaticResource AutoWideButtons}" Click="btnOpenAddComponent_Click" Margin="25,0,0,25"/>
-            <Button x:Name="btnAllList" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource AutoWideButtons}" Width="100"  VerticalAlignment="Bottom" Margin="142,25,25,75" Content="Весь список" Click="btnAllList_Click" />
-            <Button x:Name="btnUpdateComponentList" Grid.Column="1" Style="{StaticResource AutoWideButtons}" Click="btnUpdateComponentList_Click" Width="100"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Обновить" Margin="250,25,25,25"/>
-            <TextBlock x:Name="tbBackward" MouseLeftButtonDown="tbBackward_MouseLeftButtonDown" Grid.Column="3"  Grid.Row="0" Text="Выйти" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="25" Style="{StaticResource TextBlocks}" />
-            <TextBlock x:Name="tbCurrentUser" Grid.Column="4" VerticalAlignment="Center" FontSize="16"  Style="{StaticResource TextBlocks}"  HorizontalAlignment="Center" Margin="0,0,0,0"/>
-            <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" TextChanged="tbSearch_TextChanged" ToolTip="Поиск по названию" GotFocus="tbSearch_GotFocus" LostFocus="tbSearch_LostFocus" Grid.Column="2" Style="{StaticResource OtherTextBoxes}" />
-            <TextBlock x:Name="NoResultsTextBlock" Grid.Row="0" Grid.Column="2" Text="Товаров не найдено" Visibility="Collapsed" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+            <Button x:Name="btnRemains" Grid.Column="0" Style="{StaticResource AutoWideButtons}" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,25,25,75" Content="Остатки" Click="btnRemains_Click" />
+            <Button x:Name="btnOpenAddComponent" Grid.Column="0" HorizontalAlignment="Left" Width="217" VerticalAlignment="Bottom" Content="Добавить компонент" Style="{StaticResource AutoWideButtons}" Click="btnOpenAddComponent_Click" Margin="25,0,0,25"/>
+            <Button x:Name="btnAllList" Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource AutoWideButtons}" Width="100"  VerticalAlignment="Bottom" Margin="142,25,25,75" Content="Весь список" Click="btnAllList_Click" />
+            <Button x:Name="btnUpdateComponentList" Grid.Column="0" Style="{StaticResource AutoWideButtons}" Click="btnUpdateComponentList_Click" Width="100"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Обновить" Margin="250,25,25,25"/>
+            <TextBlock x:Name="tbBackward" MouseLeftButtonDown="tbBackward_MouseLeftButtonDown" Grid.Column="2"  Grid.Row="0" Text="Выйти" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="25" Style="{StaticResource TextBlocks}" />
+            <TextBlock x:Name="tbCurrentUser" Grid.Column="2" VerticalAlignment="Center" FontSize="16"  Style="{StaticResource TextBlocks}"  HorizontalAlignment="Center" Margin="0,0,0,0"/>
+            <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" TextChanged="tbSearch_TextChanged" ToolTip="Поиск по названию" GotFocus="tbSearch_GotFocus" LostFocus="tbSearch_LostFocus" Grid.Column="1" Style="{StaticResource OtherTextBoxes}" />
+            <TextBlock x:Name="NoResultsTextBlock" Grid.Row="0" Grid.Column="1" Text="Товаров не найдено" Visibility="Collapsed" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
            
-            <Button x:Name="btnSearch" Click="btnSearch_Click" Grid.Column="2" VerticalAlignment="Center"  BorderThickness="0" Height="20" Padding="0"  HorizontalAlignment="Right" Width="20">
+            <Button x:Name="btnSearch" Click="btnSearch_Click" Grid.Column="1" VerticalAlignment="Center"  BorderThickness="0" Height="20" Padding="0"  HorizontalAlignment="Right" Width="20">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="5" Background="{TemplateBinding Background}">
@@ -51,31 +51,8 @@
                 </Button.Background>
             </Button>
         </Grid>
-
-        <Image Source="pack://application:,,,/Resources/AppLogoKP.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-       
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0">
-            <Button x:Name="btnOpenArrivals" Grid.Column="0"  VerticalAlignment="Top" Grid.Row="1" Content="Поступления" Style="{StaticResource AutoWideButtons}" Click="btnOpenArrivals_Click" Margin="5,15,5,5"/>
-            <Button x:Name="btnOpenIssuences" Grid.Column="0"  VerticalAlignment="Top" Grid.Row="1" Content="Расходы" Style="{StaticResource AutoWideButtons}" Click="btnOpenIssuences_Click" Margin="5,15,5,5"/>
-            <Button x:Name="btnOpenReports" Grid.Column="0" VerticalAlignment="Top" Grid.Row="1" Content="Отчеты" Style="{StaticResource AutoWideButtons}" Click="btnOpenReports_Click" Margin="5,15,5,5"/>
-            <Button x:Name="btnOpenDiagrams" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Аналитика" Style="{StaticResource AutoWideButtons}" Click="btnOpenDiagrams_Click" Margin="5,15,5,5"/>
-
-        </StackPanel>
-        <Button x:Name="btnInfo" Grid.Row="1" Grid.Column="0"  BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="25" Height="25" Padding="0" Margin="20" Click="btnInfo_Click">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-            <Button.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Resources/Infobtn.png"/>
-            </Button.Background>
-        </Button>
-
-
-        <ScrollViewer Grid.Column="1" Grid.Row="1">
+        
+        <ScrollViewer Grid.Column="0" Grid.Row="1">
             <StackPanel x:Name="ProductContainer" Orientation="Vertical" />
         </ScrollViewer>
     </Grid>

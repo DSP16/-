@@ -8,7 +8,7 @@
         ResizeMode="NoResize"
         Icon="pack://application:,,,/Resources/AppLogoKPIcon.ico"
         WindowStartupLocation="CenterScreen"
-        Title="ИП Хевеши | Вход в систему" Height="480" Width="450"
+        Title="ИП Хевеши | Вход в систему" Height="440" Width="450"
         Loaded="Window_Loaded">
     
     <Grid>

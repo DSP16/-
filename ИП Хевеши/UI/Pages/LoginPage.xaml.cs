@@ -28,51 +28,18 @@ namespace ИП_Хевеши.UI.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
-        private CaptchaGenerate captchaGenerate = new CaptchaGenerate();
-        private string captchaText;
         List<Users> users;
         public LoginPage()
         {
             InitializeComponent();
             users = AuthorizeBack.GetUserList();
-            RefreshCaptcha();
-        }
-        private void RefreshCaptcha()
-        {
-            captchaText = captchaGenerate.GenerateCaptcha(out Bitmap bitmap);
-            CaptchaImage.Source = ConvertBitmapToImageSource(bitmap);
 
         }
 
-        private BitmapImage ConvertBitmapToImageSource(Bitmap bitmap)
-        {
-            using (MemoryStream memory = new MemoryStream())
-            {
-                bitmap.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                return bitmapImage;
-            }
-        }
-        
         private void btnAuthorize_Click(object sender, RoutedEventArgs e)
         {
-            if(CaptchaTextBox.Text == captchaText)
-            {
-                AuthorizeWn wn = (AuthorizeWn)Window.GetWindow(this);
-                AuthorizeBack.AuthorizeUser(tbLogin, pbPassword, tbVisiblePassword, cbHideShowPassword, users, wn);
-            }
-            else
-            {
-                MessageBox.Show("Неверный текст CAPTCHA. Попробуйте еще раз.", "Ошибка ввода текста", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                CaptchaTextBox.Text = "";
-                RefreshCaptcha();
-            }
-          
+            AuthorizeWn wn = (AuthorizeWn)Window.GetWindow(this);
+            AuthorizeBack.AuthorizeUser(tbLogin, pbPassword, tbVisiblePassword, cbHideShowPassword, users, wn);
         }
 
         private void cbHideShowPassword_Unchecked(object sender, RoutedEventArgs e)
@@ -84,15 +51,10 @@ namespace ИП_Хевеши.UI.Pages
 
         private void cbHideShowPassword_Checked(object sender, RoutedEventArgs e)
         {
-            
+
             tbVisiblePassword.Text = pbPassword.Password;
             pbPassword.Visibility = Visibility.Hidden;
             tbVisiblePassword.Visibility = Visibility.Visible;
-        }
-
-        private void btnRefreschCaptcha_Click(object sender, RoutedEventArgs e)
-        {
-            RefreshCaptcha();
         }
     }
 }

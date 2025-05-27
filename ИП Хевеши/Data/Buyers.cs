@@ -18,6 +18,7 @@ namespace ИП_Хевеши.Data
         public Buyers()
         {
             this.Issuance = new HashSet<Issuance>();
+            this.IssuanceReceipts = new HashSet<IssuanceReceipts>();
         }
     
         public int ID { get; set; }
@@ -26,5 +27,7 @@ namespace ИП_Хевеши.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Issuance> Issuance { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IssuanceReceipts> IssuanceReceipts { get; set; }
     }
 }

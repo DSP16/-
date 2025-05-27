@@ -12,22 +12,23 @@ namespace ИП_Хевеши.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Providers
+    public partial class IssuanceReceipts
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Providers()
+        public IssuanceReceipts()
         {
-            this.Arrivals = new HashSet<Arrivals>();
-            this.Receipts = new HashSet<Receipts>();
+            this.Issuance = new HashSet<Issuance>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Country { get; set; }
+        public string ReceiptNumber { get; set; }
+        public System.DateTime Date { get; set; }
+        public int BuyerID { get; set; }
+        public int UserID { get; set; }
     
+        public virtual Buyers Buyers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arrivals> Arrivals { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Receipts> Receipts { get; set; }
+        public virtual ICollection<Issuance> Issuance { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

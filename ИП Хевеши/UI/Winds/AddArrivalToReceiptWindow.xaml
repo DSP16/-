@@ -1,0 +1,17 @@
+﻿<Window x:Class="ИП_Хевеши.UI.Winds.AddArrivalToReceiptWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ИП_Хевеши.UI.Winds"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="ИП Хевеши | Добавление комплектующего в поставку" 
+        Icon="pack://application:,,,/Resources/AppLogoKPIcon.ico" Height="300" Width="400">
+    <StackPanel Margin="20">
+        <ComboBox x:Name="cbComponent"  Height="35" ToolTip="Выбор комплектующего" DisplayMemberPath="Name" SelectedValuePath="ID" Margin="0 5" />
+        <TextBox x:Name="tbQuantity" Style="{StaticResource OtherTextBoxes}" GotFocus="tbQuantity_GotFocus" LostFocus="tbQuantity_LostFocus" Margin="0 5"/>
+        <TextBox x:Name="tbPrice" Style="{StaticResource OtherTextBoxes}" GotFocus="tbPrice_GotFocus" LostFocus="tbPrice_LostFocus" Margin="0 5"/>
+        <Button Content="Сохранить" Style="{StaticResource AutoWideButtons}" Click="Save_Click" Margin="0 10"/>
+    </StackPanel>
+</Window>

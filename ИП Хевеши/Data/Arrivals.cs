@@ -21,9 +21,11 @@ namespace ИП_Хевеши.Data
         public Nullable<decimal> PurchasePrice { get; set; }
         public Nullable<int> UserID { get; set; }
         public Nullable<int> ProviderID { get; set; }
+        public Nullable<int> ReceiptID { get; set; }
     
         public virtual Components Components { get; set; }
         public virtual Users Users { get; set; }
         public virtual Providers Providers { get; set; }
+        public virtual Receipts Receipts { get; set; }
     }
 }

@@ -175,12 +175,7 @@ namespace ИП_Хевеши.UI.Pages
             }
         }
 
-        private void btnOpenArrivals_Click(object sender, RoutedEventArgs e)
-        {
-            ArrivalsPage arrivalsPage = new ArrivalsPage();
-
-            Manager.Frame.Navigate(arrivalsPage);
-        }
+       
 
         private void btnUpdateComponentList_Click(object sender, RoutedEventArgs e)
         {
@@ -204,11 +199,7 @@ namespace ИП_Хевеши.UI.Pages
             btnRemains.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#249ad7"));
         }
 
-        private void btnOpenIssuences_Click(object sender, RoutedEventArgs e)
-        {
-            
-            Manager.Frame.Navigate(new IssuancesPage());
-        }
+       
 
         private void tbBackward_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -223,11 +214,7 @@ namespace ИП_Хевеши.UI.Pages
             
         }
 
-        private void btnOpenReports_Click(object sender, RoutedEventArgs e)
-        {
-            ReportsWn reportsWn = new ReportsWn();
-            reportsWn.Show();
-        }
+       
 
         private void btnOpenDiagrams_Click(object sender, RoutedEventArgs e)
         {
