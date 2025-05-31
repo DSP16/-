@@ -111,7 +111,7 @@ namespace ИП_Хевеши.Views
                 double forecastY = k * x.Length + b;
 
                 // Точка прогноза
-                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nextMonth), forecastY));
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(nextMonth), Math.Round(forecastY, 2)));
             }
 
             RevenueForecastModel.Series.Add(series);
@@ -300,7 +300,7 @@ namespace ИП_Хевеши.Views
                         }
 
                         workbook.SaveAs(saveFileDialog.FileName);
-                        MessageBox.Show("Отчет успешно сохранен.");
+                        MessageBox.Show("Отчет успешно сохранен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }

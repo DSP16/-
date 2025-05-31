@@ -42,7 +42,7 @@ namespace ИП_Хевеши.UI.Winds
        !int.TryParse(tbQuantity.Text, out int qty) ||
        !decimal.TryParse(tbPrice.Text, out decimal price))
             {
-                MessageBox.Show("Проверьте корректность ввода.");
+                MessageBox.Show("Проверьте корректность ввода.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
             }
 
@@ -53,12 +53,12 @@ namespace ИП_Хевеши.UI.Winds
                 var component = db.Components.FirstOrDefault(c => c.ID == componentId);
                 if (component == null)
                 {
-                    MessageBox.Show("Компонент не найден.");
+                    MessageBox.Show("Компонент не найден.", "Ошибка поиска", MessageBoxButton.OK, MessageBoxImage.Hand);
                     return;
                 }
                 if (receiptId <= 0)
                 {
-                    MessageBox.Show("Ошибка: неверный ID накладной.");
+                    MessageBox.Show("Ошибка: неверный ID накладной.", "Ошибка поиска", MessageBoxButton.OK, MessageBoxImage.Hand);
                     return;
                 }
                 // 

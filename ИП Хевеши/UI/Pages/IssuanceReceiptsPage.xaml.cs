@@ -153,7 +153,7 @@ namespace ИП_Хевеши.UI.Pages
 
                                 if (buyer == null || user == null)
                                 {
-                                    MessageBox.Show($"Не найдены данные в строке {row.RowNumber()}");
+                                    MessageBox.Show($"Не найдены данные в строке {row.RowNumber()}", "Ошибка поиска", MessageBoxButton.OK, MessageBoxImage.Error);
                                     continue;
                                 }
 
@@ -182,13 +182,13 @@ namespace ИП_Хевеши.UI.Pages
                                 var component = db.Components.FirstOrDefault(c => c.Name == componentName);
                                 if (component == null)
                                 {
-                                    MessageBox.Show($"Компонент '{componentName}' не найден (строка {row.RowNumber()})");
+                                    MessageBox.Show($"Компонент '{componentName}' не найден (строка {row.RowNumber()})", "Ошибка поиска", MessageBoxButton.OK, MessageBoxImage.Hand);
                                     continue;
                                 }
 
                                 if (component.Quantity < quantity)
                                 {
-                                    MessageBox.Show($"Недостаточно компонента '{componentName}' (строка {row.RowNumber()})");
+                                    MessageBox.Show($"Недостаточно компонента '{componentName}' (строка {row.RowNumber()})", "Ошибка формирования расхода", MessageBoxButton.OK, MessageBoxImage.Warning);
                                     continue;
                                 }
 
@@ -214,7 +214,7 @@ namespace ИП_Хевеши.UI.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка: {ex.Message}\n{ex.InnerException?.Message}", "Ошибка");
+                MessageBox.Show($"Ошибка: {ex.Message}\n{ex.InnerException?.Message}", "Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void FilterByDate_Click(object sender, RoutedEventArgs e)
@@ -250,7 +250,7 @@ namespace ИП_Хевеши.UI.Pages
             }
             else
             {
-                MessageBox.Show("Выберите дату для фильтрации.");
+                MessageBox.Show("Выберите дату для фильтрации.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
         }
 

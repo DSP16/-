@@ -38,7 +38,7 @@ namespace ИП_Хевеши.UI.Winds
         {
             if (cbProvider.SelectedValue == null)
             {
-                MessageBox.Show("Выберите поставщика.");
+                MessageBox.Show("Выберите поставщика.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
             }
 

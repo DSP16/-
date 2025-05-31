@@ -42,7 +42,7 @@ namespace ИП_Хевеши.Classes
                     }
                     if (!IsCorrectUser)
                     {
-                        MessageBox.Show("Неправильный логин или пароль");
+                        MessageBox.Show("Неправильный логин или пароль", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
                     }
                     else
                     {
@@ -67,7 +67,7 @@ namespace ИП_Хевеши.Classes
                     }
                     if (!IsCorrectUser)
                     {
-                        MessageBox.Show("Неправильный логин или пароль");
+                        MessageBox.Show("Неправильный логин или пароль", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
                     }
                     else
                     {
@@ -81,7 +81,7 @@ namespace ИП_Хевеши.Classes
             } 
             catch(Exception ex) 
             { 
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show($"Возникла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

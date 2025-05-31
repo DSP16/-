@@ -8,14 +8,13 @@
         Icon="pack://application:,,,/Resources/AppLogoKPIcon.ico"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"        
-        Title="ИП Хевеши | Справочник" Height="250" Width="400">
+        Title="ИП Хевеши | Справочник" Height="270" Width="400">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
-                <Button x:Name="btnOpenReportsHelper" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Поступления" Style="{StaticResource AutoWideButtons}" Click="btnOpenReportsHelper_Click" Margin="20,15,20,5"/>
-                <Button x:Name="btnOpenIssuancesHelper" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Расходы" Style="{StaticResource AutoWideButtons}" Click="btnOpenIssuancesHelper_Click" Margin="20,15,20,5"/>
                 <Button x:Name="btnOpenComponentsHelper" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Комплектующие" Style="{StaticResource AutoWideButtons}" Click="btnOpenComponentsHelper_Click" Margin="20,15,20,5"/>
-
+                <Button x:Name="btnOpenReceiptssHelper" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Поступления" Style="{StaticResource AutoWideButtons}" Click="btnOpenReceiptssHelper_Click" Margin="20,15,20,5"/>
+                <Button x:Name="btnOpenIssuancesHelper" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Расходы" Style="{StaticResource AutoWideButtons}" Click="btnOpenIssuancesHelper_Click" Margin="20,15,20,5"/>
                 <Button x:Name="btnOpenDiagramsHelper" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Работа с диаграммами" Style="{StaticResource AutoWideButtons}" Click="btnOpenDiagramsHelper_Click" Margin="20,15,20,5"/>
 
             </StackPanel>

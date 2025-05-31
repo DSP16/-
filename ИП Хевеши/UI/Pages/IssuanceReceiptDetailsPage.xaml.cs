@@ -121,17 +121,18 @@ namespace ИП_Хевеши.UI.Pages
                         {
                             FileName = $"Расход_{receipt.ReceiptNumber}_{receipt.Date:yyyyMMdd}.xlsx",
                             Filter = "Excel файлы (*.xlsx)|*.xlsx"
+
                         };
 
                         if (dialog.ShowDialog() == true)
                         {
                             workbook.SaveAs(dialog.FileName);
-                            MessageBox.Show("Файл сохранён.");
+                            MessageBox.Show($"Файл сохранён по данному пути: {}", "Успех", MessageBoxButton.OK, MessageBoxImage.Hand);
                         }
                     }
                 }
             }
-
+        
             private void OnPageUnloaded(object sender, RoutedEventArgs e)
             {
                 CleanupIfEmpty();
@@ -169,7 +170,7 @@ namespace ИП_Хевеши.UI.Pages
             else
             {
                 // Если нет, можно показать сообщение об ошибке или выполнить другое действие
-                MessageBox.Show("Нет предыдущей страницы.");
+                MessageBox.Show("Нет предыдущей страницы.", "Ошибка навигации", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
         }
 

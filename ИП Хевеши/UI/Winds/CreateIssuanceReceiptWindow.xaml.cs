@@ -38,7 +38,7 @@ namespace ИП_Хевеши.Winds
         {
             if (cbBuyer.SelectedValue == null)
             {
-                MessageBox.Show("Выберите покупателя.");
+                MessageBox.Show("Выберите покупателя.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
             }
 

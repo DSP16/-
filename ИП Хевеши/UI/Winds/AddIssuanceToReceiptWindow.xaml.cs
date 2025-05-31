@@ -41,7 +41,7 @@ namespace ИП_Хевеши.UI.Winds
             if (cbComponent.SelectedValue == null ||
                 !int.TryParse(tbQuantity.Text, out int qty) || qty <= 0)
             {
-                MessageBox.Show("Введите корректное количество.");
+                MessageBox.Show("Введите корректное количество.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace ИП_Хевеши.UI.Winds
 
                 if (component == null)
                 {
-                    MessageBox.Show("Компонент не найден.");
+                    MessageBox.Show("Компонент не найден.", "Ошибка поиска", MessageBoxButton.OK, MessageBoxImage.Hand);
                     return;
                 }
 

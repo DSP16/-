@@ -32,7 +32,7 @@ namespace ИП_Хевеши
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Ошибка при очистке кэша: " + ex.Message);
+                    MessageBox.Show("Ошибка при очистке кэша: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 

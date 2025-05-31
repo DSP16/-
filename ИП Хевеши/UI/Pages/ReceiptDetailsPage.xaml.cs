@@ -142,7 +142,7 @@ namespace ИП_Хевеши.UI.Pages
                     if (dialog.ShowDialog() == true)
                     {
                         workbook.SaveAs(dialog.FileName);
-                        MessageBox.Show("Отчет успешно сохранён.");
+                        MessageBox.Show("Отчет успешно сохранён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
@@ -157,7 +157,7 @@ namespace ИП_Хевеши.UI.Pages
             else
             {
                 // Если нет, можно показать сообщение об ошибке или выполнить другое действие
-                MessageBox.Show("Нет предыдущей страницы.");
+                MessageBox.Show("Нет предыдущей страницы.", "Ошибка навигации", MessageBoxButton.OK, MessageBoxImage.Hand);
             }
         }
 
