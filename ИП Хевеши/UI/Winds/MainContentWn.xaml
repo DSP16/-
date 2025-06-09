@@ -11,14 +11,18 @@
         Title="ИП Хевеши" 
         Icon="pack://application:,,,/Resources/AppLogoKPIcon.ico"
         MinHeight="720" MinWidth="1080" Height="720" Width="1080">
+    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="220">
+              
+            </ColumnDefinition>
             <!-- Боковая панель -->
             <ColumnDefinition Width="*"/>
-            <!-- Основной контент -->
+            
+        <!-- Основной контент -->
         </Grid.ColumnDefinitions>
-
+        
         <!-- Боковая панель -->
         <StackPanel Background="#b8dafc" Grid.Column="0">
             <Image Source="pack://application:,,,/Resources/AppLogoKP.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
@@ -27,21 +31,52 @@
                 <Button x:Name="btnOpenArrivals" Grid.Column="0"  VerticalAlignment="Top" Grid.Row="1" Content="Поступления" Style="{StaticResource AutoWideButtons}" Click="btnOpenArrivals_Click" Margin="5,15,5,5"/>
                 <Button x:Name="btnOpenIssuences" Grid.Column="0"  VerticalAlignment="Top" Grid.Row="1" Content="Расходы" Style="{StaticResource AutoWideButtons}" Click="btnOpenIssuences_Click" Margin="5,15,5,5"/>
                 <Button x:Name="btnOpenDiagrams" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Content="Аналитика" Style="{StaticResource AutoWideButtons}" Click="btnOpenDiagrams_Click" Margin="5,15,5,5"/>
-
+                
             </StackPanel>
+
         </StackPanel>
-        <Button x:Name="btnInfo" Grid.Row="1" Grid.Column="0"  BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="25" Height="25" Padding="0" Margin="20" Click="btnInfo_Click">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-            <Button.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Resources/Infobtn.png"/>
-            </Button.Background>
-        </Button>
+      
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                <Button x:Name="btnProfile" Grid.Row="1" Grid.Column="0"   BorderThickness="0" HorizontalAlignment="Left"  Width="25" Height="25" Padding="0" Margin="20" Click="btnProfile_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Resources/profile-user.png"/>
+                    </Button.Background>
+                <Button.ToolTip>
+                    <ToolTip Background="#b8dafc">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/profile-user.png" Width="40" Margin="5"/>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                <TextBlock x:Name="tbProfileName"   Style="{StaticResource TextBlocks}" FontWeight="SemiBold" FontSize="14" Margin="5"/>
+                                <TextBlock x:Name="tbProfileRole"   Style="{StaticResource TextBlocks}" Margin="5"/>
+
+                            </StackPanel>
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+                </Button>
+                <Button x:Name="btnInfo" Grid.Row="1" Grid.Column="0"  BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="25" Height="25" Padding="0" Margin="100,20,20,20" Click="btnInfo_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Background>
+                        <ImageBrush ImageSource="pack://application:,,,/Resources/Infobtn.png"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+            
+        
+      
         <!-- Контент -->
         <Frame x:Name="MainFrame" Grid.Column="1" NavigationUIVisibility="Hidden"/>
     </Grid>

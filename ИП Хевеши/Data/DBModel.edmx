@@ -40,6 +40,7 @@
           <Property Name="ZoneID" Type="int" />
           <Property Name="RowCell" Type="nvarchar" MaxLength="10" />
           <Property Name="Actuality" Type="nvarchar" MaxLength="20" />
+          <Property Name="SKU" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="InventoryChecks">
           <Key>
@@ -484,6 +485,7 @@
           <NavigationProperty Name="Movements" Relationship="Self.FK__Movements__Compo__07C12930" FromRole="Components" ToRole="Movements" />
           <NavigationProperty Name="Manufacturers" Relationship="Self.FK_Components_Manufacturer" FromRole="Components" ToRole="Manufacturers" />
           <NavigationProperty Name="Zones" Relationship="Self.FK_Components_Zones" FromRole="Components" ToRole="Zones" />
+          <Property Name="SKU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="InventoryChecks">
           <Key>
@@ -949,6 +951,7 @@
           <EntitySetMapping Name="Components">
             <EntityTypeMapping TypeName="Model.Components">
               <MappingFragment StoreEntitySet="Components">
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />

@@ -20,6 +20,11 @@ using DocumentFormat.OpenXml.Vml.Office;
 using ИП_Хевеши.UI.Winds;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using ИП_Хевеши.Classes;
+using Xceed.Words.NET;
+using System.IO;
+using Xceed.Document.NET;
+using ИП_Хевеши.Views;
+
 
 namespace ИП_Хевеши.UI.Pages
 {
@@ -28,11 +33,12 @@ namespace ИП_Хевеши.UI.Pages
     /// </summary>
     public partial class ReceiptDetailsPage : Page
     {
+        public string tempPath;
         private readonly bool isNewReceipt;
         public List<Arrivals> Arrivals { get; set; }
         private int receiptId;
         private bool hasAddedArrivals = false;
-        public ReceiptDetailsPage(int receiptId, bool isNew )
+        public ReceiptDetailsPage(int receiptId, bool isNew)
         {
             InitializeComponent();
             this.receiptId = receiptId;
@@ -73,8 +79,8 @@ namespace ИП_Хевеши.UI.Pages
         private void App_Exit(object sender, ExitEventArgs e)
         {
             TryRemoveReceiptIfEmpty();
-        }   
-        
+        }
+
         private void LoadData()
         {
             using (var db = new ИП_ХевешиEntities())
@@ -90,63 +96,113 @@ namespace ИП_Хевеши.UI.Pages
 
         private void ExportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new ИП_ХевешиEntities())
+            try
             {
-                var receipt = db.Receipts
-                    .Include(r => r.Providers)
-                    .Include(r => r.Users)
-                    .First(r => r.ID == receiptId);
-
-                var arrivals = db.Arrivals
-                    .Include(a => a.Components)
-                    .Where(a => a.ReceiptID == receiptId)
-                    .ToList();
-
-                // Создание Excel-файла
-                using (var workbook = new ClosedXML.Excel.XLWorkbook())
+              
+                using (var context = new ИП_ХевешиEntities())
                 {
-                    var worksheet = workbook.Worksheets.Add("Поступление");
+                    var receipt = context.Receipts.Find(receiptId);
+                    var provider = context.Providers.Find(receipt.ProviderID);
+                    var user = context.Users.Find(receipt.UserID);
+                    tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"Приходная накладная_{receipt.ReceiptNumber}.docx");
 
-                    // Заголовок
-                    worksheet.Cell(1, 1).Value = "Накладная №";
-                    worksheet.Cell(1, 2).Value = receipt.ReceiptNumber;
-                    worksheet.Cell(2, 1).Value = "Дата:";
-                    worksheet.Cell(2, 2).Value = receipt.Date.ToShortDateString();
-                    worksheet.Cell(3, 1).Value = "Поставщик:";
-                    worksheet.Cell(3, 2).Value = receipt.Providers.Name;
+                    var arrivals = context.Arrivals
+                        .Where(a => a.ReceiptID == receiptId)
+                        .ToList();
 
-                    // Заголовки таблицы
-                    worksheet.Cell(5, 1).Value = "Комплектующее";
-                    worksheet.Cell(5, 2).Value = "Количество";
-                    worksheet.Cell(5, 3).Value = "Цена закупки";
+                    var dialog = new SaveFileDialog();
+                    dialog.Title = "Сохранить накладную";
+                    dialog.Filter = "Word Document (*.docx)|*.docx";
+                    dialog.FileName = $"Накладная_{receipt.ReceiptNumber}.docx";
 
-                    // Данные
-                    int row = 6;
-                    foreach (var a in arrivals)
+                    if (dialog.ShowDialog() != true)
+                        return;
+
+                    string filePath = dialog.FileName;
+
+                    using (DocX document = DocX.Create(filePath))
                     {
-                        worksheet.Cell(row, 1).Value = a.Components.Name;
-                        worksheet.Cell(row, 2).Value = a.Quantity;
-                        worksheet.Cell(row, 3).Value = a.PurchasePrice;
-                        row++;
+                        document.PageLayout.Orientation = Xceed.Document.NET.Orientation.Portrait;
+
+                        // Шапка
+                        document.InsertParagraph("ИП Хевеши").FontSize(14).Bold().Alignment = Alignment.center;
+                        document.InsertParagraph("ПРИХОДНАЯ НАКЛАДНАЯ").FontSize(14).Bold().Alignment = Alignment.center;
+                        document.InsertParagraph();
+
+                        document.InsertParagraph($"Документ № {receipt.ReceiptNumber} от {receipt.Date:dd.MM.yyyy}").FontSize(12);
+                        document.InsertParagraph($"Поставщик: {provider.Name} ({provider.Country})").FontSize(12);
+                        document.InsertParagraph($"Принял поставку: {user.UserSurname} {user.UserName}").FontSize(12);
+                        document.InsertParagraph();
+
+                        // Таблица
+                        var table = document.AddTable(arrivals.Count + 2, 7);
+                        table.Design = TableDesign.TableGrid;
+
+                        // Заголовок
+                        table.Rows[0].Cells[0].Paragraphs[0].Append("№");
+                        table.Rows[0].Cells[1].Paragraphs[0].Append("Товар");
+                        table.Rows[0].Cells[2].Paragraphs[0].Append("Тип");
+                        table.Rows[0].Cells[3].Paragraphs[0].Append("Артикул");
+                        table.Rows[0].Cells[4].Paragraphs[0].Append("Цена (руб.)");
+                        table.Rows[0].Cells[5].Paragraphs[0].Append("Кол-во");
+                        table.Rows[0].Cells[6].Paragraphs[0].Append("Сумма");
+
+                        decimal totalSum = 0;
+                        int totalQuantity = 0;
+
+                        for (int i = 0; i < arrivals.Count; i++)
+                        {
+                            var item = arrivals[i];
+                            var component = context.Components.Find(item.ComponentID);
+                            decimal sum = (item.Quantity ?? 0) * (item.PurchasePrice ?? 0);
+
+                            table.Rows[i + 1].Cells[0].Paragraphs[0].Append((i + 1).ToString());
+                            table.Rows[i + 1].Cells[1].Paragraphs[0].Append(component.Name);
+                            table.Rows[i + 1].Cells[2].Paragraphs[0].Append(component.Type);
+                            table.Rows[i + 1].Cells[3].Paragraphs[0].Append(component.SKU);
+                            table.Rows[i + 1].Cells[4].Paragraphs[0].Append($"{item.PurchasePrice:0.00}");
+                            table.Rows[i + 1].Cells[5].Paragraphs[0].Append($"{item.Quantity}");
+                            table.Rows[i + 1].Cells[6].Paragraphs[0].Append($"{sum:0.00}");
+
+                            totalSum += sum;
+                            totalQuantity += item.Quantity ?? 0;
+                        }
+
+                        // Итоговая строка
+                       
+                        table.Rows[arrivals.Count + 1].Cells[0].Paragraphs[0].Append("ИТОГО").Bold();
+                        table.Rows[arrivals.Count + 1].Cells[5].Paragraphs[0].Append($"{totalQuantity}").Bold();
+                        table.Rows[arrivals.Count + 1].Cells[6].Paragraphs[0].Append($"{totalSum:0.00}").Bold();
+
+                        document.InsertTable(table);
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+
+                        // Блок для подписи
+                        document.InsertParagraph("Принял: ____________________  (" + user.UserSurname + " " + user.UserName + ")").FontSize(12);
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph("М.П.").FontSize(12);
+
+                        document.Save();
+
+
                     }
-
-                    worksheet.Columns().AdjustToContents();
-
-                    // Сохранение файла
-                    var dialog = new Microsoft.Win32.SaveFileDialog
-                    {
-                        Filter = "Excel файлы (*.xlsx)|*.xlsx",
-                        FileName = $"Накладная_{receipt.ReceiptNumber}_{receipt.Date:yyyyMMdd}.xlsx"
-                    };
-
-                    if (dialog.ShowDialog() == true)
-                    {
-                        workbook.SaveAs(dialog.FileName);
-                        MessageBox.Show("Отчет успешно сохранён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
+                    MessageBox.Show("Документ успешно сохранён!", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Возникла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
+
+
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {

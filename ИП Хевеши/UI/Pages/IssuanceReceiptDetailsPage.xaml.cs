@@ -20,6 +20,8 @@ using ИП_Хевеши.UI.Winds;
 using System.Data.Entity;
 using ИП_Хевеши.Classes;
 using ИП_Хевеши.Views;
+using Xceed.Words.NET;
+using Xceed.Document.NET;
 
 namespace ИП_Хевеши.UI.Pages
 {
@@ -82,55 +84,110 @@ namespace ИП_Хевеши.UI.Pages
 
             private void Export_Click(object sender, RoutedEventArgs e)
             {
-                using (var db = new ИП_ХевешиEntities())
+                try
                 {
-                    var receipt = db.IssuanceReceipts
-                                    .Include(r => r.Buyers)
-                                    .First(r => r.ID == receiptId);
+                using (var context = new ИП_ХевешиEntities())
+                {
+                    var issuanceReceipt = context.IssuanceReceipts.Find(receiptId);
+                    var buyer = context.Buyers.Find(issuanceReceipt.BuyerID);
+                    var user = context.Users.Find(issuanceReceipt.UserID);
 
-                    var items = db.Issuance
-                                  .Include(i => i.Components)
-                                  .Where(i => i.ReceiptID == receiptId)
-                                  .ToList();
+                    var issuances = context.Issuance
+                        .Where(i => i.ReceiptID == receiptId)
+                        .ToList();
 
-                    using (var workbook = new XLWorkbook())
+                    
+                    var dialog = new SaveFileDialog();
+                    dialog.Title = "Сохранить расходную накладную";
+                    dialog.Filter = "Word Document (*.docx)|*.docx";
+                    dialog.FileName = $"Расходная накладная_{issuanceReceipt.ReceiptNumber}.docx";
+
+                    if (dialog.ShowDialog() != true)
+                        return;
+
+                    string filePath = dialog.FileName;
+
+                    
+                    using (DocX document = DocX.Create(filePath))
                     {
-                        var ws = workbook.Worksheets.Add("Расход");
+                        document.PageLayout.Orientation = Xceed.Document.NET.Orientation.Portrait;
 
-                        ws.Cell(1, 1).Value = "Накладная №";
-                        ws.Cell(1, 2).Value = receipt.ReceiptNumber;
-                        ws.Cell(2, 1).Value = "Дата:";
-                        ws.Cell(2, 2).Value = receipt.Date.ToShortDateString();
-                        ws.Cell(3, 1).Value = "Покупатель:";
-                        ws.Cell(3, 2).Value = receipt.Buyers.Name;
+                        document.InsertParagraph("ИП Хевеши").FontSize(14).Bold().Alignment = Alignment.center;
+                        document.InsertParagraph("Расходная накладная").FontSize(14).Bold().Alignment = Alignment.center;
+                        document.InsertParagraph();
 
-                        ws.Cell(5, 1).Value = "Комплектующее";
-                        ws.Cell(5, 2).Value = "Количество";
+                        document.InsertParagraph($"Документ № {issuanceReceipt.ReceiptNumber} от {issuanceReceipt.Date:dd.MM.yyyy}").FontSize(12);
+                        document.InsertParagraph($"Покупатель: {buyer.Name} ({buyer.Country})").FontSize(12);
+                        document.InsertParagraph($"Отпустил: {user.UserSurname} {user.UserName}").FontSize(12);
+                        document.InsertParagraph();
 
-                        int row = 6;
-                        foreach (var i in items)
+                        var table = document.AddTable(issuances.Count + 2, 7);
+                        table.Design = TableDesign.TableGrid;
+
+                        table.Rows[0].Cells[0].Paragraphs[0].Append("№");
+                        table.Rows[0].Cells[1].Paragraphs[0].Append("Товар");
+                        table.Rows[0].Cells[2].Paragraphs[0].Append("Тип");
+                        table.Rows[0].Cells[3].Paragraphs[0].Append("Артикул");
+                        table.Rows[0].Cells[4].Paragraphs[0].Append("Цена (руб.)");
+                        table.Rows[0].Cells[5].Paragraphs[0].Append("Кол-во");
+                        table.Rows[0].Cells[6].Paragraphs[0].Append("Сумма");
+
+                        decimal totalSum = 0;
+                        int totalQuantity = 0;
+
+                        for (int i = 0; i < issuances.Count; i++)
                         {
-                            ws.Cell(row, 1).Value = i.Components.Name;
-                            ws.Cell(row, 2).Value = i.Quantity;
-                            row++;
+                            var item = issuances[i];
+                            var component = context.Components.Find(item.ComponentID);
+                            decimal sum = (item.Quantity ?? 0) * component.Price;
+
+                            table.Rows[i + 1].Cells[0].Paragraphs[0].Append((i + 1).ToString());
+                            table.Rows[i + 1].Cells[1].Paragraphs[0].Append(component.Name);
+                            table.Rows[i + 1].Cells[2].Paragraphs[0].Append(component.Type);
+                            table.Rows[i + 1].Cells[3].Paragraphs[0].Append(component.SKU);
+                            table.Rows[i + 1].Cells[4].Paragraphs[0].Append($"{component.Price:0.00}");
+                            table.Rows[i + 1].Cells[5].Paragraphs[0].Append($"{item.Quantity}");
+                            table.Rows[i + 1].Cells[6].Paragraphs[0].Append($"{sum:0.00}");
+
+                            totalSum += sum;
+                            totalQuantity += item.Quantity ?? 0;
                         }
 
-                        ws.Columns().AdjustToContents();
+                        table.Rows[issuances.Count + 1].Cells[0].Paragraphs[0].Append("ИТОГО").Bold();
+                        table.Rows[issuances.Count + 1].Cells[5].Paragraphs[0].Append($"{totalQuantity}").Bold();
+                        table.Rows[issuances.Count + 1].Cells[6].Paragraphs[0].Append($"{totalSum:0.00}").Bold();
 
-                        var dialog = new SaveFileDialog
-                        {
-                            FileName = $"Расход_{receipt.ReceiptNumber}_{receipt.Date:yyyyMMdd}.xlsx",
-                            Filter = "Excel файлы (*.xlsx)|*.xlsx"
+                        document.InsertTable(table);
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        // Блок для подписи
+                        document.InsertParagraph("Отпустил: ____________________(" + user.UserSurname + " " + user.UserName + ")").FontSize(12);
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph("М.П.").FontSize(12);
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph("Принял: ____________________(" + buyer.Name+ ")").FontSize(12);
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph();
+                        document.InsertParagraph("М.П.").FontSize(12);
 
-                        };
-
-                        if (dialog.ShowDialog() == true)
-                        {
-                            workbook.SaveAs(dialog.FileName);
-                            MessageBox.Show($"Файл сохранён по данному пути: {}", "Успех", MessageBoxButton.OK, MessageBoxImage.Hand);
-                        }
+                        document.Save();
                     }
+
+                    MessageBox.Show("Документ успешно сохранён!", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Возникла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                    
+                
             }
         
             private void OnPageUnloaded(object sender, RoutedEventArgs e)

@@ -3,57 +3,96 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ИП_Хевеши.UI.UserControls"
       mc:Ignorable="d" 
       d:DesignHeight="725" d:DesignWidth="1080"
       MinHeight="725" MinWidth="1080"
       Title="MainContentPage" Background="White">
+    
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            
-            <ColumnDefinition>
-        </ColumnDefinition>
-
-        </Grid.ColumnDefinitions>
-
+    <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.24*"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid  Grid.Column="1" Grid.Row="0">
-            <Grid.ColumnDefinitions>
+        <!-- Панель фильтров -->
+        <Border Background="White" CornerRadius="10" Padding="15" Margin="0,0,0,10"  >
+            <Border.Effect>
+                <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="2"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                <ComboBox x:Name="CategoryFilter" Width="150" ToolTip="Категория" Margin="10" SelectionChanged="CategoryFilter_SelectionChanged"/>
+                <ComboBox x:Name="StockLevelFilter" Margin="10" Width="150" ToolTip="Запасы" SelectionChanged="StockLevelFilter_SelectionChanged">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="Низкие запасы"/>
+                </ComboBox>
+                <ComboBox x:Name="AvailabilityFilter" Margin="10" Width="150" ToolTip="Наличие" SelectionChanged="AvailabilityFilter_SelectionChanged">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="В наличии"/>
+                </ComboBox>
+                <ComboBox x:Name="TurnoverFilter" Margin="10" Width="150" ToolTip="Оборачиваемость" SelectionChanged="TurnoverFilter_SelectionChanged">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="ТОП-10"/>
+                </ComboBox>
+                <ComboBox x:Name="ArrivalDateFilter" Margin="10" Width="150" ToolTip="Поступления" SelectionChanged="ArrivalDateFilter_SelectionChanged">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="Последние 30 дней"/>
+                    <ComboBoxItem Content="Последний год"/>
+                </ComboBox>
+                <ComboBox x:Name="SupplierFilter" Margin="10" Width="150" ToolTip="Поставщик" SelectionChanged="SupplierFilter_SelectionChanged"/>
                 
-                <ColumnDefinition Width="0.6*"/>
-                <ColumnDefinition Width="0.4*"/>
-                <ColumnDefinition Width="0.3*"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="btnRemains" Grid.Column="0" Style="{StaticResource AutoWideButtons}" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,25,25,75" Content="Остатки" Click="btnRemains_Click" />
-            <Button x:Name="btnOpenAddComponent" Grid.Column="0" HorizontalAlignment="Left" Width="217" VerticalAlignment="Bottom" Content="Добавить компонент" Style="{StaticResource AutoWideButtons}" Click="btnOpenAddComponent_Click" Margin="25,0,0,25"/>
-            <Button x:Name="btnAllList" Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource AutoWideButtons}" Width="100"  VerticalAlignment="Bottom" Margin="142,25,25,75" Content="Весь список" Click="btnAllList_Click" />
-            <Button x:Name="btnUpdateComponentList" Grid.Column="0" Style="{StaticResource AutoWideButtons}" Click="btnUpdateComponentList_Click" Width="100"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Обновить" Margin="250,25,25,25"/>
-            <TextBlock x:Name="tbBackward" MouseLeftButtonDown="tbBackward_MouseLeftButtonDown" Grid.Column="2"  Grid.Row="0" Text="Выйти" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="25" Style="{StaticResource TextBlocks}" />
-            <TextBlock x:Name="tbCurrentUser" Grid.Column="2" VerticalAlignment="Center" FontSize="16"  Style="{StaticResource TextBlocks}"  HorizontalAlignment="Center" Margin="0,0,0,0"/>
-            <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" TextChanged="tbSearch_TextChanged" ToolTip="Поиск по названию" GotFocus="tbSearch_GotFocus" LostFocus="tbSearch_LostFocus" Grid.Column="1" Style="{StaticResource OtherTextBoxes}" />
-            <TextBlock x:Name="NoResultsTextBlock" Grid.Row="0" Grid.Column="1" Text="Товаров не найдено" Visibility="Collapsed" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-           
-            <Button x:Name="btnSearch" Click="btnSearch_Click" Grid.Column="1" VerticalAlignment="Center"  BorderThickness="0" Height="20" Padding="0"  HorizontalAlignment="Right" Width="20">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5" Background="{TemplateBinding Background}">
-                            <ContentPresenter />
+                <Button Content="Сбросить" Width="100" Click="Button_Click"  Style="{StaticResource AutoWideButtons}" FontSize="14" Height="30" FontWeight="Bold" Margin="10,0,0,0" />
+            </StackPanel>
+            
+        </Border>
+        <TextBlock x:Name="EmptyTextBlock" Grid.Row="1"
+               Text="Нет данных по данным фильтрам"
+               Foreground="Red"
+               FontSize="16"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Visibility="Collapsed"/>
+        <!-- Сетка товаров -->
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl x:Name="ProductsList">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" Margin="10" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#DDD" BorderThickness="1" CornerRadius="8" Margin="10" Padding="10" Background="White">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding Type}" FontStyle="Italic" Foreground="Gray" Margin="0,0,0,5"/>
+                                <TextBlock>
+<Run Text="Артикул: "/>
+<Run Text="{Binding SKU}"/>
+
+                                </TextBlock>
+                                <TextBlock>
+                <Run Text="Цена: "/>
+                <Run Text="{Binding Price}"/>
+                <Run Text=" руб."/>
+                                </TextBlock>
+
+                                <TextBlock>
+                <Run Text="Остаток: "/>
+                <Run Text="{Binding Quantity}"/>
+                                </TextBlock>
+
+                                <TextBlock x:Name="tbProvider">
+                
+                <Run Text="{Binding ProviderText , Mode=OneWay}"/>
+                                </TextBlock>
+                                <TextBlock Text="{Binding ActualityText}" Margin="0,0,0,5" Foreground="{Binding ActualityColor}"/>
+                            </StackPanel>
                         </Border>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Background>
-                    <ImageBrush ImageSource="pack://application:,,,/Resources/Searchico.png"/>
-                </Button.Background>
-            </Button>
-        </Grid>
-        
-        <ScrollViewer Grid.Column="0" Grid.Row="1">
-            <StackPanel x:Name="ProductContainer" Orientation="Vertical" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </Page>

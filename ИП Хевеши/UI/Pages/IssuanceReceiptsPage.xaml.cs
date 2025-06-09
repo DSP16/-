@@ -57,7 +57,8 @@ namespace ИП_Хевеши.UI.Pages
                                  UserName = r.Users.UserName
                                  
                              });
-
+                
+               
                 Receipts = new ObservableCollection<IssuanceReceiptsViewModel>(list);
             }
 
@@ -221,6 +222,15 @@ namespace ИП_Хевеши.UI.Pages
         {
             if (dpFilterDate.SelectedDate is DateTime selectedDate)
             {
+                var firstDayOfSelectedMonth = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+                var firstDayOfNextMonth = firstDayOfSelectedMonth.AddMonths(1);
+
+                if (firstDayOfNextMonth > DateTime.Now.AddDays(1))
+                {
+                    FutureDateTextBlock.Visibility = Visibility.Visible;
+                    NoDataTextBlock.Visibility = Visibility.Collapsed;
+                    return;
+                }
                 int month = selectedDate.Month;
                 int year = selectedDate.Year;
 
@@ -244,7 +254,16 @@ namespace ИП_Хевеши.UI.Pages
 
                     Receipts = new ObservableCollection<IssuanceReceiptsViewModel>(filtered);
                 }
-
+                if (Receipts.Count == 0)
+                {
+                    NoDataTextBlock.Visibility = Visibility.Visible;
+                    FutureDateTextBlock.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    NoDataTextBlock.Visibility = Visibility.Collapsed;
+                    FutureDateTextBlock.Visibility = Visibility.Collapsed;
+                }
                 DataContext = null;
                 DataContext = this;
             }

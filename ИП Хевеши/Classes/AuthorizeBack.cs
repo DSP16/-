@@ -15,6 +15,7 @@ namespace ИП_Хевеши.Classes
     public class AuthorizeBack : AuthorizeWn
     {
         public static string userName;
+        public static int UserRole;
         public static List<Users> GetUserList()
         {
             using (var context = new ИП_ХевешиEntities())
@@ -38,6 +39,7 @@ namespace ИП_Хевеши.Classes
                             IsCorrectUser = true;
                             CorrectUserId = i;
                             userName = users[i].UserName + " " + users[i].UserSurname;
+                            UserRole = users[i].RoleID;
                         }
                     }
                     if (!IsCorrectUser)
@@ -47,7 +49,7 @@ namespace ИП_Хевеши.Classes
                     else
                     {
                         
-                        MainContentWn mainContentWn = new MainContentWn(userName,  CorrectUserId); /*users[CorrectUserId].Login*/
+                        MainContentWn mainContentWn = new MainContentWn(userName,  CorrectUserId, UserRole); /*users[CorrectUserId].Login*/
                         Application.Current.MainWindow =  mainContentWn;
                         authorizeWn.Close();
                         mainContentWn.Show();
@@ -63,6 +65,7 @@ namespace ИП_Хевеши.Classes
                             IsCorrectUser = true;
                             CorrectUserId = i;
                             userName = users[i].UserName + " " + users[i].UserSurname;
+                            UserRole = users[i].RoleID;
                         }
                     }
                     if (!IsCorrectUser)
@@ -72,7 +75,7 @@ namespace ИП_Хевеши.Classes
                     else
                     {
                       
-                        MainContentWn mainContentWn = new MainContentWn(userName, CorrectUserId); /*users[CorrectUserId].Login*/
+                        MainContentWn mainContentWn = new MainContentWn(userName, CorrectUserId, UserRole); /*users[CorrectUserId].Login*/
                         authorizeWn.Close();
                         mainContentWn.Show();
 

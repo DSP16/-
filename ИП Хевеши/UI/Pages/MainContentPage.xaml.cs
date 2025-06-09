@@ -16,10 +16,11 @@ using ИП_Хевеши.UI.Winds;
 using ИП_Хевеши.Data;
 using ИП_Хевеши.Classes;
 using ИП_Хевеши.UI.Pages;
-using ИП_Хевеши.UI.UserControls;
+ 
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using ИП_Хевеши.UI.Winds.TipWinds;
+using ИП_Хевеши.Views;
 
 namespace ИП_Хевеши.UI.Pages
 {
@@ -28,214 +29,188 @@ namespace ИП_Хевеши.UI.Pages
     /// </summary>
     public partial class MainContentPage : Page
     {
-        public string name;
-        public static ИП_ХевешиEntities context = new ИП_ХевешиEntities();
-        public static List<Components> components;
-        public MainContentPage(string name)
+
+        private ИП_ХевешиEntities context = new ИП_ХевешиEntities();
+        private List<ComponentViewModel> allComponents;
+
+        public MainContentPage()
         {
             InitializeComponent();
-            LoadCards();
-            tbCurrentUser.Text = name;
+            LoadData();
+            SetupFilters();
+            ApplyFilters();
         }
 
-        private void LoadRemainsCard()
+        private void LoadData()
         {
-            var loadRemainsProductCard = new LoadRemainsCardBack();
-            var components = loadRemainsProductCard.GetComponentsList();
-
-            if (components.Any())
+            allComponents = context.Components.Select(c => new ComponentViewModel
             {
-                ProductContainer.Children.Clear();
-                NoResultsTextBlock.Visibility = Visibility.Collapsed;
+                ID = c.ID,
+                Name = c.Name,
+                Type = c.Type,
+                Price = c.Price,
+                SKU = c.SKU,
+                Quantity = c.Quantity ?? 0,
+                MinQuantity = c.MinQuantity ?? 0,
+                ProviderName = c.Arrivals
+                                 .OrderByDescending(a => a.ArrivalDate)
+                                 .Select(a => a.Providers.Name)
+                                 .FirstOrDefault() ?? "Не было поставок",
+                LastArrivalDate = c.Arrivals
+                                    .OrderByDescending(a => a.ArrivalDate)
+                                    .Select(a => a.ArrivalDate)
+                                    .FirstOrDefault()
+            }).ToList();
+        }
+
+        private void SetupFilters()
+        {
+            var categories = allComponents.Select(c => c.Type).Distinct().ToList();
+            categories.Insert(0, "Все");
+            CategoryFilter.ItemsSource = categories;
+
+            var suppliers = allComponents.Select(c => c.ProviderName).Distinct().ToList();
+             
+            suppliers.Insert(0, "Все");
+            SupplierFilter.ItemsSource = suppliers;
+
+            CategoryFilter.SelectedIndex = 0;
+            SupplierFilter.SelectedIndex = 0;
+            StockLevelFilter.SelectedIndex = 1;
+            AvailabilityFilter.SelectedIndex = 0;
+            TurnoverFilter.SelectedIndex = 0;
+            ArrivalDateFilter.SelectedIndex = 0;
+        }
+
+        private void FilterChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            var filtered = allComponents.AsEnumerable();
+
+            if (CategoryFilter.SelectedItem is string category && category != "Все")
+                filtered = filtered.Where(c => c.Type == category);
+
+            if (StockLevelFilter.SelectedIndex == 1)
+                filtered = filtered.Where(c => c.Quantity < c.MinQuantity);
+
+            if (AvailabilityFilter.SelectedIndex == 1)
+                filtered = filtered.Where(c => c.Quantity > 0);
+
+            if (TurnoverFilter.SelectedIndex == 1)
+            {
+                var topSellingIds = context.Issuance
+                    .GroupBy(i => i.ComponentID)
+                    .Select(g => new { ComponentID = g.Key, SoldQty = g.Sum(i => i.Quantity) })
+                    .OrderByDescending(g => g.SoldQty)
+                    .Take(10)
+                    .Select(g => g.ComponentID)
+                    .ToList();
+
+                filtered = filtered.Where(c => topSellingIds.Contains(c.ID));
+            }
+
+            if (ArrivalDateFilter.SelectedIndex == 1)
+            {
+                var threshold = DateTime.Now.AddDays(-30);
+                filtered = filtered.Where(c => c.LastArrivalDate >= threshold);
+            }
+            else if (ArrivalDateFilter.SelectedIndex == 2)
+            {
+                var threshold = DateTime.Now.AddYears(-1);
+                filtered = filtered.Where(c => c.LastArrivalDate >= threshold);
+            }
+
+            if (SupplierFilter.SelectedItem is string supplier && supplier != "Все")
+                filtered = filtered.Where(c => c.ProviderName == supplier);
+
+            ProductsList.ItemsSource = filtered.ToList();
+            var filteredList = filtered.ToList();
+            ProductsList.ItemsSource = filteredList;
+
+            // Проверяем пустоту и управляем отображением
+            if (filteredList.Count == 0)
+            {
+                EmptyTextBlock.Visibility = Visibility.Visible;
             }
             else
             {
-                ProductContainer.Children.Clear();
-                NoResultsTextBlock.Visibility = Visibility.Visible;
-
+                EmptyTextBlock.Visibility = Visibility.Collapsed;
             }
+        }
 
-            foreach (var component in components)
+        public class ComponentViewModel
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public string Type { get; set; }
+            public decimal Price { get; set; }
+            public int Quantity { get; set; }
+            public int MinQuantity { get; set; }
+            public string ProviderName { get; set; }
+            public string SKU { get; set; }
+            public string ProviderText
             {
-                var productCard = new ProductCard
+                get
                 {
-                    ComponentName = component.Name,
-                    Price = component.Price,
-                    Quantity = component.Quantity ?? 0,
-                    Manufacturer = component.Manufacturers.Name, // Выводим имя производителя
-                    Actuality = component.Actuality,
-                    IsCheckedActuality = component.Actuality == "Актуально"
-                };
-                ProductContainer.Children.Add(productCard);
+                    if (LastArrivalDate == null || string.IsNullOrWhiteSpace(ProviderName) || ProviderName == "Не было поставок")
+                        return "Не было поставок";
+                    return $"Поставщик: {ProviderName}";
+                }
             }
-            NoResultsTextBlock.Visibility = components.Any() ? Visibility.Collapsed : Visibility.Visible;
+            public DateTime? LastArrivalDate { get; set; }
+            public string ActualityText =>
+       (Quantity == 0 || LastArrivalDate == null || ProviderName == "Не было поставок") ? "Не актуально" : "Актуально";
+
+            public string ActualityColor =>
+                (Quantity == 0 || LastArrivalDate == null || ProviderName == "Не было поставок") ? "Red" : "Green";
+        }
+        private void CategoryFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
         }
 
-        private void LoadCards()
+        private void StockLevelFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var loadProductCards = new LoadProductCards();
-            var components = loadProductCards.GetComponentsList();
-            if (components.Any())
-            {
-                ProductContainer.Children.Clear();
-                NoResultsTextBlock.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                ProductContainer.Children.Clear();
-                NoResultsTextBlock.Visibility = Visibility.Visible;
-
-            }
-            foreach (var component in components)
-            {
-                var productCard = new ProductCard
-                {
-                    ComponentName = component.Name,
-                    Price = component.Price,
-                    Quantity = component.Quantity ?? 0,
-                    Manufacturer = component.Manufacturers.Name, // Выводим имя производителя
-                    Actuality = component.Actuality,
-                    IsCheckedActuality = component.Actuality == "Актуально"
-
-
-                };
-                ProductContainer.Children.Add(productCard);
-            }
-            NoResultsTextBlock.Visibility = components.Any() ? Visibility.Collapsed : Visibility.Visible;
+            ApplyFilters();
         }
 
-       
-
-       
-
-        private void tbSearch_GotFocus(object sender, RoutedEventArgs e)
+        private void AvailabilityFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TextBox searchBox = sender as TextBox;
-            if (searchBox.Text == "Поиск")
-            {
-                searchBox.Text = "";
-                searchBox.Foreground = Brushes.Black; // Измените цвет текста на стандартный
-            }
+            ApplyFilters();
         }
 
-        private void tbSearch_LostFocus(object sender, RoutedEventArgs e)
+        private void TurnoverFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TextBox searchBox = sender as TextBox;
-            if (String.IsNullOrWhiteSpace(searchBox.Text))
-            {
-                searchBox.Text = "Поиск";
-                searchBox.Foreground = Brushes.Gray; // Измените цвет текста на серый
-            }
+            ApplyFilters();
         }
 
-        private void btnOpenAddComponent_Click(object sender, RoutedEventArgs e)
+        private void ArrivalDateFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AddComponentWn addComponentWn = new AddComponentWn();
-            addComponentWn.Show();
+            ApplyFilters();
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        private void SupplierFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
-             SearchComponentsBack searchComponentsBack = new SearchComponentsBack();
-             var searchTerm = tbSearch.Text;
-             var components = searchComponentsBack.GetComponentsByName(searchTerm);
-             if (components.Any())
-             {
-                ProductContainer.Children.Clear();
-                NoResultsTextBlock.Visibility = Visibility.Collapsed;
-             }
-             else
-             {
-                ProductContainer.Children.Clear();
-                NoResultsTextBlock.Visibility = Visibility.Visible;
-                 
-             }
-            foreach (var component in components)
-            {
-                var productCard = new ProductCard
-                {
-                    ComponentName = component.Name,
-                    Price = component.Price,
-                    Quantity = component.Quantity ?? 0,
-                    Manufacturer = component.Manufacturers?.Name,
-                     Actuality = component.Actuality,
-                    IsCheckedActuality = component.Actuality == "Актуально"
-                };
-                NoResultsTextBlock.Visibility = Visibility.Collapsed;
-                ProductContainer.Children.Add(productCard);
-            }
+            ApplyFilters();
         }
 
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (tbSearch.Text == "")
-            {
-                LoadCards();
-            }
-        }
+            CategoryFilter.SelectedIndex = 0;
+            SupplierFilter.SelectedIndex = 0;
+            StockLevelFilter.SelectedIndex = 0;
+            AvailabilityFilter.SelectedIndex = 0;
+            TurnoverFilter.SelectedIndex = 0;
+            ArrivalDateFilter.SelectedIndex = 0;
 
-       
-
-        private void btnUpdateComponentList_Click(object sender, RoutedEventArgs e)
-        {
-            LoadCards();
-            btnAllList.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#249ad7"));
-            btnRemains.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#249ad7"));
-        }
-
-        private void btnRemains_Click(object sender, RoutedEventArgs e)
-        {
-            LoadRemainsCard();
-            btnRemains.Background = new SolidColorBrush(Colors.Gray);
-            btnAllList.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#249ad7"));
-        }
-
-        private void btnAllList_Click(object sender, RoutedEventArgs e)
-        {
-
-            LoadCards();
-            btnAllList.Background = new SolidColorBrush(Colors.Gray);
-            btnRemains.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#249ad7"));
-        }
-
-       
-
-        private void tbBackward_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Вы действительно хотите выйти?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes) 
-            {
-                AuthorizeWn authorizeWn = new AuthorizeWn();
-                authorizeWn.Show();
-                Window.GetWindow(this).Close();
-               
-            }
-            
-        }
-
-       
-
-        private void btnOpenDiagrams_Click(object sender, RoutedEventArgs e)
-        {
-            Manager.Frame.Navigate(new AnalyticsPage());
-        }
-
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                btnSearch_Click(sender, e);
-                e.Handled = true;
-            }
-
-
-        }
-
-        private void btnInfo_Click(object sender, RoutedEventArgs e)
-        {
-            HelperCollectionWn helperCollectionWn = new HelperCollectionWn();
-            helperCollectionWn.Show();
+            ApplyFilters();
         }
     }
 }
+
+    
+

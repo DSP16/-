@@ -9,44 +9,67 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReceiptPage">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="0.2*"/>
+    <Grid >
+        <Grid.RowDefinitions >
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+           
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <ScrollViewer Margin="20" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
+            <StackPanel Orientation="Vertical">
                 <TextBlock Text="Приходные накладные" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" />
                 <StackPanel Orientation="Horizontal" Margin="0">
                     <DatePicker x:Name="dpFilterDate" Width="100" Margin="0,5,5,5"/>
                     <Button Content="Применить фильтр" Click="FilterByDate_Click" Height="30" FontSize="14" Style="{StaticResource AutoWideButtons}" Margin="5"/>
-                    
+
                     <Button x:Name="btnResetFilter" Content="Сбросить" Click="btnResetFilter_Click" Height="30" FontSize="14" Style="{StaticResource AutoWideButtons}" Margin="5"/>
                     <Button x:Name="btnAddProvider" Content="Добавить поставщика" Style="{StaticResource AutoWideButtons}" Height="30" FontSize="14" HorizontalAlignment="Right" Click="btnAddProvider_Click" Margin="5"/>
 
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding Receipts}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="#F0F0F0" Margin="5" Padding="10" CornerRadius="8"
-                    MouseLeftButtonUp="ReceiptCard_Click"
-                    Cursor="Hand"
-                    Tag="{Binding ID}">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding ReceiptNumber}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Date, StringFormat=Дата: {0:dd.MM.yyyy}}" />
-                                    <TextBlock Text="{Binding ProviderName}" />
-                                    <TextBlock Text="{Binding UserName}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                
             </StackPanel>
-        </ScrollViewer>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+            <TextBlock x:Name="NoDataTextBlock"
+           Text="Нет данных за выбранный период"
+           FontSize="16" Grid.RowSpan="2"
+           Foreground="Red"
+           HorizontalAlignment="Center" VerticalAlignment="Center"
+           Visibility="Collapsed"/>
+
+                <TextBlock x:Name="FutureDateTextBlock"
+           Text="Выбран будущий период"
+           FontSize="16" Grid.RowSpan="2"
+           Foreground="Red"
+           HorizontalAlignment="Center" VerticalAlignment="Center"
+           Visibility="Collapsed"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Receipts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F0F0F0" Margin="5" Padding="10" CornerRadius="6"
+    MouseLeftButtonUp="ReceiptCard_Click"
+    Cursor="Hand"
+    Tag="{Binding ID}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding ReceiptNumber}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Date, StringFormat=Дата: {0:dd.MM.yyyy}}" />
+                                        <TextBlock Text="{Binding ProviderName}" />
+                                        <TextBlock Text="{Binding UserName}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+
+
+            
+        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="0 0 0 10">
             <Button Content="Добавить накладную" Style="{StaticResource Buttons}" Click="AddReceipt_Click" Margin="10"/>
             <Button Content="Импорт накладной" Click="ImportXml_Click" Style="{StaticResource Buttons}" Margin="10"/>
             

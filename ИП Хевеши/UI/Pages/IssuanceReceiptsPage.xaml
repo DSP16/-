@@ -35,7 +35,19 @@
                     <Button x:Name="btnAddBuyer" Content="Добавить покупателя" Style="{StaticResource AutoWideButtons}" Height="30" FontSize="14" HorizontalAlignment="Right" Click="btnAddBuyer_Click" Margin="5"/>
                 </StackPanel>
             </StackPanel>
-           
+            <TextBlock x:Name="NoDataTextBlock"
+           Text="Нет данных за выбранный период"
+           FontSize="16" Grid.RowSpan="2"
+           Foreground="Red"
+           HorizontalAlignment="Center" VerticalAlignment="Center"
+           Visibility="Collapsed"/>
+
+            <TextBlock x:Name="FutureDateTextBlock"
+           Text="Выбран будущий период"
+           FontSize="16" Grid.RowSpan="2"
+           Foreground="Red"
+           HorizontalAlignment="Center" VerticalAlignment="Center"
+           Visibility="Collapsed"/>
             <!-- Прокручиваемый список -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding Receipts}">

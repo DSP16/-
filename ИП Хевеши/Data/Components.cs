@@ -33,6 +33,7 @@ namespace ИП_Хевеши.Data
         public Nullable<int> ZoneID { get; set; }
         public string RowCell { get; set; }
         public string Actuality { get; set; }
+        public string SKU { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arrivals> Arrivals { get; set; }

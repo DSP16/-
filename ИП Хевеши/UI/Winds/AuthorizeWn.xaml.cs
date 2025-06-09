@@ -27,13 +27,45 @@ namespace ИП_Хевеши
         public AuthorizeWn()
         {
             InitializeComponent();
-            List<Users> users = AuthorizeBack.GetUserList();
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Manager.Frame = LogRegFrame;
-            LogRegFrame.Navigate(new LoginPage());
+            users = AuthorizeBack.GetUserList();
 
+        }
+
+        private void btnAuthorize_Click(object sender, RoutedEventArgs e)
+        {
+            AuthorizeWn wn = (AuthorizeWn)Window.GetWindow(this);
+            AuthorizeBack.AuthorizeUser(tbLogin, pbPassword, tbVisiblePassword, cbHideShowPassword, users, wn);
+        }
+
+        private void cbHideShowPassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+            pbPassword.Password = tbVisiblePassword.Text;
+            pbPassword.Visibility = Visibility.Visible;
+            tbVisiblePassword.Visibility = Visibility.Hidden;
+        }
+
+        private void cbHideShowPassword_Checked(object sender, RoutedEventArgs e)
+        {
+
+            tbVisiblePassword.Text = pbPassword.Password;
+            pbPassword.Visibility = Visibility.Hidden;
+            tbVisiblePassword.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult message = MessageBox.Show("Вы действитоельно хотите покинуть окно авторизации?","Выход из приложения", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            if (message == MessageBoxResult.OK)
+            {
+                Application.Current.Shutdown();
+            }
+            
+
+        }
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }
