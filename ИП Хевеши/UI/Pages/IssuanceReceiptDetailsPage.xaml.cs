@@ -1,25 +1,13 @@
-﻿using ClosedXML.Excel;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ИП_Хевеши.Data;
 using ИП_Хевеши.UI.Winds;
 using System.Data.Entity;
-using ИП_Хевеши.Classes;
-using ИП_Хевеши.Views;
 using Xceed.Words.NET;
 using Xceed.Document.NET;
 
@@ -28,8 +16,8 @@ namespace ИП_Хевеши.UI.Pages
     /// <summary>
     /// Логика взаимодействия для IssuanceReceiptDetailsPage.xaml
     /// </summary>
-    
-        public partial class IssuanceReceiptDetailsPage : Page
+
+    public partial class IssuanceReceiptDetailsPage : Page
         {
             private readonly int receiptId;
             private readonly bool isNew;
@@ -42,7 +30,14 @@ namespace ИП_Хевеши.UI.Pages
                 InitializeComponent();
                 this.receiptId = receiptId;
                 this.isNew = isNew;
-
+                if (!isNew)
+                {
+                    btnSave.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    btnSave.Visibility = Visibility.Visible;
+            }
                 LoadData();
                 DataContext = this;
                 using (var db = new ИП_ХевешиEntities())
@@ -233,7 +228,14 @@ namespace ИП_Хевеши.UI.Pages
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Manager.Frame.Navigate(new IssuanceReceiptsPage());
+            if (hasAddedIssuance)
+            {
+                Classes.Manager.Frame.Navigate(new IssuanceReceiptsPage());
+            }
+            else
+            {
+                MessageBox.Show("Добавьте как минимум одно комплектующее.", "Пустой список комплектующих", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

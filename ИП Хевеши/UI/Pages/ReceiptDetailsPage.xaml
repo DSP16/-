@@ -47,7 +47,7 @@
                 <Button Content="Скачать накладную" Style="{StaticResource Buttons}"  Click="ExportToExcel_Click" Width="200"  Margin="5"/>
 
                 <Button x:Name="btnAddArrivedComponent" Content="Добавить комплектующее" Style="{StaticResource Buttons}" Width="200" Margin="5"  Click="AddComponentToReceipt_Click"/>
-                <Button x:Name="btnbtnSave" Content="Сохранить" Width="200" Style="{StaticResource Buttons}" Click="btnbtnSave_Click"/>
+                <Button x:Name="btnSave" Content="Сохранить" Width="200" Style="{StaticResource Buttons}" Click="btnSave_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

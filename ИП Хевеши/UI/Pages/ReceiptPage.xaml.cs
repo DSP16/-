@@ -236,12 +236,7 @@ namespace ИП_Хевеши.UI.Pages
                 var firstDayOfSelectedMonth = new DateTime(selectedDate.Year, selectedDate.Month, 1);
                 var firstDayOfNextMonth = firstDayOfSelectedMonth.AddMonths(1);
 
-                if (firstDayOfNextMonth > DateTime.Now.AddDays(1))
-                {
-                    FutureDateTextBlock.Visibility = Visibility.Visible;
-                    NoDataTextBlock.Visibility = Visibility.Collapsed;
-                    return;
-                }
+                
                 FutureDateTextBlock.Visibility = Visibility.Collapsed;
                 NoDataTextBlock.Visibility = Visibility.Collapsed;
                 int month = selectedDate.Month;
@@ -267,6 +262,15 @@ namespace ИП_Хевеши.UI.Pages
                   
                     Receipts = new ObservableCollection<ReceiptViewModel>(filtered);
                 }
+                DataContext = null;
+                DataContext = this;
+                if (firstDayOfNextMonth > DateTime.Now.AddMonths(1))
+                {
+                    FutureDateTextBlock.Visibility = Visibility.Visible;
+                    NoDataTextBlock.Visibility = Visibility.Collapsed;
+                   
+                    return;
+                }
                 if (Receipts.Count == 0)
                 {
                     NoDataTextBlock.Visibility = Visibility.Visible;
@@ -277,8 +281,7 @@ namespace ИП_Хевеши.UI.Pages
                     NoDataTextBlock.Visibility = Visibility.Collapsed;
                     FutureDateTextBlock.Visibility = Visibility.Collapsed;
                 }
-                DataContext = null;
-                DataContext = this;
+               
             }
             else
             {

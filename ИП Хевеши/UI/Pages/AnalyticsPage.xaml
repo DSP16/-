@@ -14,39 +14,66 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
       <Grid>
     <StackPanel Orientation="Vertical" Margin="10">
-                <StackPanel Orientation="Horizontal" Margin="10">
-                    <TextBlock Text="Период: " FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <ComboBox x:Name="DateFilter" Width="150" Height="30" SelectionChanged="DateFilter_SelectionChanged">
-                        <ComboBoxItem Content="Все"/>
-                        <ComboBoxItem Content="Последние 30 дней"/>
-                        <ComboBoxItem Content="Последний год"/>
-                    </ComboBox>
-                </StackPanel>
+            
+                <Border BorderBrush="Gray" CornerRadius="10" HorizontalAlignment="Left" BorderThickness="1" >
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray" BlurRadius="1"  ShadowDepth="1"/>
+                    </Border.Effect>
+                    <StackPanel Orientation="Horizontal" Margin="10"  Width="Auto" >
+                        <TextBlock Text="Период: " FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="DateFilter" Width="150" Height="30" SelectionChanged="DateFilter_SelectionChanged">
+                            <ComboBoxItem Content="Все"/>
+                            <ComboBoxItem Content="Последние 30 дней"/>
+                            <ComboBoxItem Content="Последний год"/>
+                        </ComboBox>
+                    </StackPanel>
+                    
+                </Border>
+             
                 <!-- Анализ по категориям -->
                 <StackPanel Orientation="Vertical" Margin="10">
                     <TextBlock Text="Анализ по категориям" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <WrapPanel x:Name="CategoryAnalysisPanel" />
+                        
                     </ScrollViewer>
+                    <TextBlock x:Name="NoCategoryDataTextBlock" 
+Text="Нет данных за выбранный период"
+FontSize="16"
+Foreground="Red"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+Visibility="Collapsed"/>
                 </StackPanel>
 
                 <!-- Оборачиваемость -->
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <StackPanel Orientation="Horizontal" Margin="10">
-                        <TextBlock Text="Оборачиваемость комплектующих" FontSize="18" FontWeight="Bold" Margin="0,20,0,10"/>
-
-                        <TextBlock Text="Тип комплектующих: " FontWeight="SemiBold"  FontSize="16" VerticalAlignment="Center"  Margin="20,20,0,10"/>
-                        <ComboBox x:Name="TypeFilter" Width="150" Height="30" VerticalAlignment="Center"  Margin="0,20,0,10" SelectionChanged="TypeFilter_SelectionChanged"/>
+                    <StackPanel Orientation="Horizontal" Margin="10" >
+                        <TextBlock Text="Оборот комплектующих" FontSize="18" FontWeight="Bold" Margin="0,20,10,10"/>
+                        <Border Padding="10" Margin="0,6,0,0" BorderBrush="Gray" CornerRadius="10" HorizontalAlignment="Left" BorderThickness="1" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Тип комплектующих: " FontWeight="SemiBold"  FontSize="16" VerticalAlignment="Center"  />
+                                <ComboBox x:Name="TypeFilter" VerticalAlignment="Center" Width="150" Height="30"    SelectionChanged="TypeFilter_SelectionChanged"/>
+                            </StackPanel>
+                        </Border>
+                       
                     </StackPanel>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <WrapPanel x:Name="TurnoverPanel" />
                     </ScrollViewer>
+                    <TextBlock x:Name="NoTurnoverDataTextBlock" 
+Text="Нет данных за выбранный период"
+FontSize="16"
+Foreground="Red"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+Visibility="Collapsed"/>
                 </StackPanel>
                
                 <!-- Динамика остатков -->
-        <TextBlock Text="Динамика остатков по инвентаризации" FontSize="18" FontWeight="Bold" Margin="10,20,0,0"/>
+        <TextBlock Text="Остатки по итогам инвентаризаций" FontSize="18" FontWeight="Bold" Margin="10,20,0,0"/>
                 <lvc:CartesianChart x:Name="StockChart" Height="500" Margin="0,10,0,0"/>
                 <TextBlock x:Name="NoStockDataTextBlock" 
            Text="Нет данных за выбранный период"

@@ -43,6 +43,14 @@ namespace ИП_Хевеши.UI.Pages
             InitializeComponent();
             this.receiptId = receiptId;
             this.isNewReceipt = isNew;
+            if (isNew == true)
+            {
+                btnSave.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnSave.Visibility = Visibility.Collapsed;
+            }
             this.Unloaded += ReceiptDetailsPage_Unloaded;
             System.Windows.Application.Current.Exit += App_Exit;
             using (var db = new ИП_ХевешиEntities())
@@ -225,7 +233,7 @@ namespace ИП_Хевеши.UI.Pages
 
         private void AddComponentToReceipt_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddArrivalToReceiptWindow(receiptId); // ← проверь что тут реально ID
+            var window = new AddArrivalToReceiptWindow(receiptId); 
             if (window.ShowDialog() == true)
             {
                 hasAddedArrivals = true;
@@ -233,9 +241,18 @@ namespace ИП_Хевеши.UI.Pages
             }
         }
 
-        private void btnbtnSave_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Classes.Manager.Frame.Navigate(new ReceiptPage());
+            if (hasAddedArrivals)
+            {
+                Classes.Manager.Frame.Navigate(new ReceiptPage());
+            }
+            else
+            {
+                MessageBox.Show("Добавьте как минимум одно комплектующее.", "Пустой список комплектующих", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            
+            
         }
     }
 }

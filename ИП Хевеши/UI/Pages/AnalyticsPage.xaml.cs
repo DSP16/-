@@ -44,7 +44,9 @@ namespace ИП_Хевеши.UI.Pages
 
         public AnalyticsPage()
         {
+            
             InitializeComponent();
+            DateFilter.SelectedIndex = 0;
             LoadAnalytics();
             LoadTypes();
         }
@@ -56,7 +58,7 @@ namespace ИП_Хевеши.UI.Pages
                 {
                     // --- Определяем фильтр времени ---
                     DateTime? filterDate = null;
-
+                    
                     if (DateFilter.SelectedIndex == 1) // последние 30 дней
                         filterDate = DateTime.Now.AddDays(-30);
                     else if (DateFilter.SelectedIndex == 2) // последний год
@@ -86,7 +88,7 @@ namespace ИП_Хевеши.UI.Pages
                             SalesShare = (double)(g.Sum(x => (x.i.Quantity ?? 0) * x.c.Price) / (totalRevenue == 0 ? 1 : totalRevenue)) * 100
                         })
                         .ToList();
-
+                    
                     CategoryAnalysisPanel.Children.Clear();
 
                     foreach (var item in groupAnalysis)
@@ -111,8 +113,14 @@ namespace ИП_Хевеши.UI.Pages
 
                         border.Child = stack;
                         CategoryAnalysisPanel.Children.Add(border);
+                       
                     }
-
+                    if (groupAnalysis.Count == 0)
+                    {
+                        NoCategoryDataTextBlock.Visibility = Visibility.Visible;
+                        return;
+                    }
+                    NoCategoryDataTextBlock.Visibility = Visibility.Collapsed;
                     // --- Оборачиваемость ---
                     string selectedType = TypeFilter.SelectedItem?.ToString();
 
@@ -155,7 +163,12 @@ namespace ИП_Хевеши.UI.Pages
                         border.Child = stack;
                         TurnoverPanel.Children.Add(border);
                     }
-
+                    if (turnover.Count == 0)
+                    {
+                        NoTurnoverDataTextBlock.Visibility = Visibility.Visible;
+                        return;
+                    }
+                    NoTurnoverDataTextBlock.Visibility = Visibility.Collapsed;
                     // --- Динамика остатков ---
                     var inventoryQuery = context.InventoryChecks
                         .Where(c => c.InventoryDate.HasValue);

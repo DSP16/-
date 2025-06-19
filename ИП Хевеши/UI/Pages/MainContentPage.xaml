@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="725" d:DesignWidth="1080"
+      d:DesignHeight="725" d:DesignWidth="1400"
       MinHeight="725" MinWidth="1080"
       Title="MainContentPage" Background="White">
     
@@ -21,27 +21,62 @@
                 <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="2"/>
             </Border.Effect>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >
-                <ComboBox x:Name="CategoryFilter" Width="150" ToolTip="Категория" Margin="10" SelectionChanged="CategoryFilter_SelectionChanged"/>
-                <ComboBox x:Name="StockLevelFilter" Margin="10" Width="150" ToolTip="Запасы" SelectionChanged="StockLevelFilter_SelectionChanged">
-                    <ComboBoxItem Content="Все"/>
-                    <ComboBoxItem Content="Низкие запасы"/>
-                </ComboBox>
-                <ComboBox x:Name="AvailabilityFilter" Margin="10" Width="150" ToolTip="Наличие" SelectionChanged="AvailabilityFilter_SelectionChanged">
-                    <ComboBoxItem Content="Все"/>
-                    <ComboBoxItem Content="В наличии"/>
-                </ComboBox>
-                <ComboBox x:Name="TurnoverFilter" Margin="10" Width="150" ToolTip="Оборачиваемость" SelectionChanged="TurnoverFilter_SelectionChanged">
-                    <ComboBoxItem Content="Все"/>
-                    <ComboBoxItem Content="ТОП-10"/>
-                </ComboBox>
-                <ComboBox x:Name="ArrivalDateFilter" Margin="10" Width="150" ToolTip="Поступления" SelectionChanged="ArrivalDateFilter_SelectionChanged">
-                    <ComboBoxItem Content="Все"/>
-                    <ComboBoxItem Content="Последние 30 дней"/>
-                    <ComboBoxItem Content="Последний год"/>
-                </ComboBox>
-                <ComboBox x:Name="SupplierFilter" Margin="10" Width="150" ToolTip="Поставщик" SelectionChanged="SupplierFilter_SelectionChanged"/>
+                <Border Padding="5" CornerRadius="10"  Height="auto" Margin="0,0,0,0" BorderBrush="Gray" BorderThickness="1">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Категории" HorizontalAlignment="Center"  FontWeight="SemiBold" FontSize="14"/>
+                        <ComboBox x:Name="CategoryFilter" Width="150" ToolTip="Категория" Margin="10" SelectionChanged="CategoryFilter_SelectionChanged"/>
+
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="5" CornerRadius="10" BorderBrush="Gray" Height="auto" BorderThickness="1" Margin="10,0,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Уровень остатков" Height="auto"  HorizontalAlignment="Center"  FontWeight="SemiBold" FontSize="14"/>
+                        <ComboBox x:Name="StockLevelFilter" Margin="10" Width="150" ToolTip="Запасы" SelectionChanged="StockLevelFilter_SelectionChanged">
+                            <ComboBoxItem Content="Все"/>
+                            <ComboBoxItem Content="Низкие запасы"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Border  Padding="5" CornerRadius="10" BorderBrush="Gray" Height="auto" BorderThickness="1" Margin="10,0,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="В наличии" Height="auto"  HorizontalAlignment="Center"  FontWeight="SemiBold" FontSize="14"/>
+                        <ComboBox x:Name="AvailabilityFilter" Margin="10" Width="150" ToolTip="Наличие" SelectionChanged="AvailabilityFilter_SelectionChanged">
+                            <ComboBoxItem Content="Все"/>
+                            <ComboBoxItem Content="В наличии"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="5" CornerRadius="10" BorderBrush="Gray" Height="auto" BorderThickness="1" Margin="10,0,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Оборот" Height="auto" HorizontalAlignment="Center"  FontWeight="SemiBold" FontSize="14"/>
+                        <ComboBox x:Name="TurnoverFilter" Margin="10" Width="150" ToolTip="Оборачиваемость" SelectionChanged="TurnoverFilter_SelectionChanged">
+                            <ComboBoxItem Content="Все"/>
+                            <ComboBoxItem Content="ТОП-10"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="5" CornerRadius="10" BorderBrush="Gray" Height="auto" BorderThickness="1" Margin="10,0,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Период поступлений" Height="auto" HorizontalAlignment="Center"  FontWeight="SemiBold" FontSize="14"/>
+                        <ComboBox x:Name="ArrivalDateFilter" Margin="10" Width="150" ToolTip="Поступления" SelectionChanged="ArrivalDateFilter_SelectionChanged">
+                            <ComboBoxItem Content="Все"/>
+                            <ComboBoxItem Content="Последние 30 дней"/>
+                            <ComboBoxItem Content="Последний год"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+                <Border Padding="5" CornerRadius="10" BorderBrush="Gray" Height="auto" BorderThickness="1" Margin="10,0,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Поставщики" Height="auto" HorizontalAlignment="Center"  FontWeight="SemiBold" FontSize="14"/>
+                        <ComboBox x:Name="SupplierFilter" Margin="10" Width="150" ToolTip="Поставщик" SelectionChanged="SupplierFilter_SelectionChanged"/>
+                    </StackPanel>
+                </Border>
                 
-                <Button Content="Сбросить" Width="100" Click="Button_Click"  Style="{StaticResource AutoWideButtons}" FontSize="14" Height="30" FontWeight="Bold" Margin="10,0,0,0" />
+                <Button Content="Сбросить" Width="100" Click="Button_Click"  Style="{StaticResource AutoWideButtons}" FontSize="14" Height="30" FontWeight="Bold" Margin="70,0,0,0" />
             </StackPanel>
             
         </Border>
